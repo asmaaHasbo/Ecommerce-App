@@ -14,8 +14,6 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey();
-
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -33,7 +31,7 @@ class SignUpScreen extends StatelessWidget {
 
               SizedBox(height: 30.h),
 
-              SignUpForm(formKey: formKey),
+              SignUpForm(),
 
               RememperMeRow(),
 
@@ -49,7 +47,7 @@ class SignUpScreen extends StatelessWidget {
 
               SizedBox(height: 30.h),
 
-              SignUpBtn(formKey: formKey),
+              SignUpBtn(),
 
               SizedBox(height: 20.h),
 

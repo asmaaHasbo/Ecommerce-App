@@ -5,13 +5,13 @@ import 'package:laza_ecommerce_app/core/shared/custom_text_form_field.dart';
 import 'package:laza_ecommerce_app/features/auth/sign_up/logic/cubit/sign_up_cubit.dart';
 
 class SignUpForm extends StatelessWidget {
-  const SignUpForm({super.key, required this.formKey});
-  final GlobalKey<FormState> formKey;
+  const SignUpForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     final SignUpCubit signUpCubit = context.read<SignUpCubit>();
     return Form(
-      key: formKey,
+      key: signUpCubit.formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -54,17 +54,17 @@ class SignUpForm extends StatelessWidget {
             },
           ),
           //====================== phone ================
-          // CustomTextField(
-          //   lableText: 'Phone',
-          //   hintText: 'Phone number',
-          //   controller: signUpCubit.phoneController,
-          //   validator: (val) {
-          //     if (val.isStringNullOrEmpty()) {
-          //       return 'phone is requried';
-          //     }
-          //     return null;
-          //   },
-          // ),
+          CustomTextField(
+            // lableText: 'Phone',
+            hintText: 'Phone number',
+            controller: signUpCubit.phoneController,
+            validator: (val) {
+              if (val.isStringNullOrEmpty()) {
+                return 'phone is requried';
+              }
+              return null;
+            },
+          ),
 
           //====================== password ================
           CustomTextField(

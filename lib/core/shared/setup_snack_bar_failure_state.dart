@@ -14,7 +14,7 @@ setupSnackbarForFailureState(BuildContext context, String errMsg) {
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.all(16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      duration: const Duration(seconds: 6), // وقت أطول للرسائل الطويلة
+      duration: const Duration(seconds: 3), // وقت أطول للرسائل الطويلة
       action: SnackBarAction(
         label: 'OK',
         textColor: Colors.white,
