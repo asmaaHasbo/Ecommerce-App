@@ -37,7 +37,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 30.h),
 
               AlreadyHaveAccountRow(
-                questionText: "Don't have an account? ",
+                questionText: "Don't have an account ?",
                 actionText: 'Sign Up',
                 onTap: () {
                   context.pushNamed(Routes.signUpScreen);
