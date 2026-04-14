@@ -26,7 +26,7 @@ class OtpScreen extends StatelessWidget {
               SizedBox(height: 30.h),
               OtpTimerSection(email: email),
               SizedBox(height: 40.h),
-              const VerifyOtpButton(),
+              VerifyOtpButton(email: email),
             ],
           ),
         ),

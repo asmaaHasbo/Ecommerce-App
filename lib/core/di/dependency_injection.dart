@@ -2,10 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:laza_ecommerce_app/core/networking/dio_factory.dart';
 import 'package:laza_ecommerce_app/features/auth/forget_password/data/datasources/forget_password_remote.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/data/datasources/reset_password_remote.dart';
 import 'package:laza_ecommerce_app/features/auth/forget_password/data/datasources/verify_reset_code_remote.dart';
 import 'package:laza_ecommerce_app/features/auth/forget_password/data/repositories/forget_password_repo.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/data/repositories/reset_password_repo.dart';
 import 'package:laza_ecommerce_app/features/auth/forget_password/data/repositories/verify_reset_code_repo.dart';
 import 'package:laza_ecommerce_app/features/auth/forget_password/logic/cubit/forget_password_cubit.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/logic/cubit/reset_password_cubit.dart';
 import 'package:laza_ecommerce_app/features/auth/forget_password/logic/cubit/verify_otp_cubit.dart';
 import 'package:laza_ecommerce_app/features/auth/login/data/datasources/login_remote.dart';
 import 'package:laza_ecommerce_app/features/auth/login/data/repositories/login_repo.dart';
@@ -43,6 +46,11 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<VerifyResetCodeRemote>(() => VerifyResetCodeRemote());
   getIt.registerLazySingleton<VerifyResetCodeRepo>(() => VerifyResetCodeRepo(getIt(), getIt()));
   getIt.registerFactory<VerifyOtpCubit>(() => VerifyOtpCubit(getIt()));
+
+  //==================== reset password ====================
+  getIt.registerLazySingleton<ResetPasswordRemote>(() => ResetPasswordRemote());
+  getIt.registerLazySingleton<ResetPasswordRepo>(() => ResetPasswordRepo(getIt()));
+  getIt.registerFactory<ResetPasswordCubit>(() => ResetPasswordCubit(getIt()));
 
   //=============== home ==================
   getIt.registerLazySingleton<HomeRemote>(() => HomeRemote());

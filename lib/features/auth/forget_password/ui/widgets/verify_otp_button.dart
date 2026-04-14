@@ -8,7 +8,9 @@ import 'package:laza_ecommerce_app/core/shared/setup_snack_bar_for_success_state
 import 'package:laza_ecommerce_app/features/auth/forget_password/logic/cubit/verify_otp_cubit.dart';
 
 class VerifyOtpButton extends StatelessWidget {
-  const VerifyOtpButton({super.key});
+  final String email;
+
+  const VerifyOtpButton({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class VerifyOtpButton extends StatelessWidget {
             context,
             state.response.message ?? 'OTP verified successfully',
           );
-          context.pushNamed(Routes.newPasswordScreen);
+          context.pushNamed(Routes.newPasswordScreen, arguments: email);
         } else if (state is VerifyOtpFailure) {
           setupSnackbarForFailureState(context, state.errorMessage);
         }

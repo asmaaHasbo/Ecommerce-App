@@ -76,8 +76,9 @@ class AppRouter {
         );
 
       case Routes.newPasswordScreen:
+        final email = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => const NewPasswordScreen(),
+          builder: (_) => NewPasswordScreen(email: email),
         );
 
       // case Routes.productDetailsScreen:
