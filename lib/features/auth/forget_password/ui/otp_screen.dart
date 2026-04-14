@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/ui/widgets/otp_header.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/ui/widgets/otp_input_fields.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/ui/widgets/otp_timer_section.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/ui/widgets/verify_otp_button.dart';
 
 class OtpScreen extends StatelessWidget {
   final String email;
@@ -12,28 +15,18 @@ class OtpScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Verify Code',
-                style: AppTextStyles.font25W600darkBlack,
-              ),
-              SizedBox(height: 10.h),
-              Text(
-                'We sent a verification code to\n$email',
-                style: AppTextStyles.font14W500lightGray,
-              ),
+              OtpHeader(email: email),
               SizedBox(height: 40.h),
-              // TODO: Add OTP input fields here
-              Center(
-                child: Text(
-                  'OTP Screen - Coming Soon',
-                  style: AppTextStyles.font14W500lightGray,
-                ),
-              ),
+              const OtpInputFields(),
+              SizedBox(height: 30.h),
+              OtpTimerSection(email: email),
+              SizedBox(height: 40.h),
+              const VerifyOtpButton(),
             ],
           ),
         ),
