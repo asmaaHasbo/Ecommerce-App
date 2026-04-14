@@ -1,0 +1,19 @@
+flutter_native_splash:
+  # لون الخلفية (hex code)
+  color: "#9775FA"  
+  # صورة الـ logo في الوسط
+  image: assets/images/Splash.png
+
+  # للـ Android فقط
+  android: true
+  android_gravity: center  # موضع الـ logo: center, fill, left, etc.
+
+  # للـ iOS فقط
+  ios: true
+  ios_content_mode: center
+
+  # للـ Web فقط (اختياري)
+  web: true
+
+  
+ #command to run: dart run flutter_native_splash:create --path=flutter_native_splash.yaml

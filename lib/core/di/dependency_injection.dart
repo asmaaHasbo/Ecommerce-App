@@ -1,0 +1,48 @@
+import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
+import 'package:laza_ecommerce_app/core/networking/dio_factory.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/data/datasources/forget_password_remote.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/data/repositories/forget_password_repo.dart';
+import 'package:laza_ecommerce_app/features/auth/forget_password/logic/cubit/forget_password_cubit.dart';
+import 'package:laza_ecommerce_app/features/auth/login/data/datasources/login_remote.dart';
+import 'package:laza_ecommerce_app/features/auth/login/data/repositories/login_repo.dart';
+import 'package:laza_ecommerce_app/features/auth/login/logic/cubit/login_cubit.dart';
+import 'package:laza_ecommerce_app/features/auth/sign_up/data/datasources/sign_up_remote.dart';
+import 'package:laza_ecommerce_app/features/auth/sign_up/data/repositories/sign_up_repo.dart';
+import 'package:laza_ecommerce_app/features/auth/sign_up/logic/cubit/sign_up_cubit.dart';
+import 'package:laza_ecommerce_app/features/cart/data/api/cart_api_service.dart';
+import 'package:laza_ecommerce_app/features/cart/data/repos/cart_repo.dart';
+import 'package:laza_ecommerce_app/features/cart/logic/cubit/cart_cubit.dart';
+import 'package:laza_ecommerce_app/features/home/data/datasources/home_remote.dart';
+import 'package:laza_ecommerce_app/features/home/data/repositories/home_repo.dart';
+import 'package:laza_ecommerce_app/features/home/logic/cubit/home_cubit.dart';
+
+final getIt = GetIt.instance;
+
+Future<void> setupGetIt() async {
+  Dio dio = DioFactory.getDio();
+  // ============ login ===============
+  getIt.registerLazySingleton<LoginRemote>(() => LoginRemote());
+  getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));
+  getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt()));
+
+  //==================== sign up ====================
+  getIt.registerLazySingleton<SignUpRemote>(() => SignUpRemote());
+  getIt.registerLazySingleton<SignUpRepo>(() => SignUpRepo(getIt()));
+  getIt.registerFactory<SignUpCubit>(() => SignUpCubit(getIt()));
+
+  //==================== forget password ====================
+  getIt.registerLazySingleton<ForgetPasswordRemote>(() => ForgetPasswordRemote());
+  getIt.registerLazySingleton<ForgetPasswordRepo>(() => ForgetPasswordRepo(getIt()));
+  getIt.registerFactory<ForgetPasswordCubit>(() => ForgetPasswordCubit(getIt()));
+
+  //=============== home ==================
+  getIt.registerLazySingleton<HomeRemote>(() => HomeRemote());
+  getIt.registerLazySingleton<HomeRepo>(() => HomeRepo(getIt()));
+  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt()));
+
+  //================= cart ===============
+  getIt.registerLazySingleton<CartApiService>(() => CartApiService(dio));
+  getIt.registerLazySingleton<CartRepo>(() => CartRepo(getIt()));
+  getIt.registerFactory<CartCubit>(() => CartCubit(getIt()));
+}
