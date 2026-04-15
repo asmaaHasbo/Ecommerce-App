@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza_ecommerce_app/core/networking/token_storage.dart';
@@ -28,17 +30,35 @@ class LoginCubit extends Cubit<LoginState> {
         ),
       );
 
-      // حفظ الـ tokens بعد تسجيل الدخول الناجح
-      if (response.accessToken != null && response.accessToken!.isNotEmpty) {
-        await TokenStorage.saveToken(response.accessToken!);
-        if (response.refreshToken != null &&
-            response.refreshToken!.isNotEmpty) {
-          await TokenStorage.saveRefreshToken(response.refreshToken!);
+      // حفظ الـ token بعد تسجيل الدخول الناجح
+      if (response.token != null && response.token!.isNotEmpty) {
+        await TokenStorage.saveToken(response.token!);
+        log('✅ Token saved');
+        
+        // حفظ بيانات المستخدم (اختياري)
+        if (response.user != null) {
+          await TokenStorage.saveUserData(
+            username: response.user!.name,
+            email: response.user!.email,
+            
+          );
+          log('✅ User data saved');
         }
+        
+        // التحقق من حفظ Token
+        final savedToken = await TokenStorage.getToken();
+        if (savedToken != null) {
+          log('✅ Token verified in storage');
+        } else {
+          log('❌ Token NOT found in storage after saving!');
+        }
+      } else {
+        log('⚠️ Warning: API response has no token!');
       }
 
       emit(LoginSuccess(response));
     } catch (e) {
+      log('❌ Login Error: $e');
       emit(LoginFailure(errMsg: e.toString().replaceAll('Exception: ', '')));
     }
   }

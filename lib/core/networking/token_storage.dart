@@ -68,36 +68,7 @@ class TokenStorage {
       rethrow;
     }
   }
-  
-  /// حفظ الاثنين مع بعض
-  /// 
-  /// [accessToken] - Access Token
-  /// [refreshToken] - Refresh Token
-  /// 
-  /// الفائدة: توفير وقت - بدل ما نستدعي دالتين
-  /// 
-  /// مثال:
-  /// await TokenStorage.saveTokens(
-  ///   accessToken: 'eyJhbGci...',
-  ///   refreshToken: 'eyJhbGci...',
-  /// );
-  static Future<void> saveTokens({
-    required String accessToken,
-    required String refreshToken,
-  }) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      
-      // حفظ الاثنين في نفس الوقت
-      await Future.wait([
-        prefs.setString(_accessTokenKey, accessToken),
-        prefs.setString(_refreshTokenKey, refreshToken),
-      ]);
-    } catch (e) {
-     log('❌ Error saving tokens: $e');
-      rethrow;
-    }
-  }
+
   
   // ══════════════════════════════════════════════════════════════
   // استرجاع Tokens
@@ -226,6 +197,7 @@ class TokenStorage {
     String? userId,
     String? username,
     String? email,
+    String? phone,
   }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -238,6 +210,9 @@ class TokenStorage {
       }
       if (email != null) {
         await prefs.setString('email', email);
+      }
+      if (phone != null) {
+        await prefs.setString('phone', phone);
       }
     } catch (e) {
       log('❌ Error saving user data: $e');
