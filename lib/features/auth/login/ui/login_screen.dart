@@ -44,10 +44,6 @@ class LoginScreen extends StatelessWidget {
                 },
               ),
 
-              SizedBox(height: 20.h),
-
-              TermAndCondition(),
-
               SizedBox(height: 30.h),
 
               LoginBtn(),

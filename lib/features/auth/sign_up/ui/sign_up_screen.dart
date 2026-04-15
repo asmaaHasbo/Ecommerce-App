@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laza_ecommerce_app/core/helper/extension.dart';
 import 'package:laza_ecommerce_app/core/routing/routes.dart';
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
+import 'package:laza_ecommerce_app/features/auth/login/ui/widgets/term_and_condition.dart';
 import 'package:laza_ecommerce_app/features/auth/sign_up/ui/widgets/rememper_me_row.dart';
 import 'package:laza_ecommerce_app/features/auth/sign_up/ui/widgets/sign_up_bloc_builder.dart';
 import 'package:laza_ecommerce_app/features/auth/sign_up/ui/widgets/sign_up_btn.dart';
@@ -44,6 +45,9 @@ class SignUpScreen extends StatelessWidget {
                   context.pushNamed(Routes.loginScreen);
                 },
               ),
+
+              SizedBox(height: 20.h),
+              TermAndCondition(),
 
               SizedBox(height: 30.h),
 
