@@ -19,7 +19,7 @@ class WelcomeHeader extends StatelessWidget {
             textAlign: TextAlign.start,
           ),
           SizedBox(height: 4.h),
-          Text('Welcome to Laza.', style: AppTextStyles.font15W400lightGray),
+          Text('Welcome to Laza Store.', style: AppTextStyles.font15W400lightGray),
         ],
       ),
     );

@@ -21,8 +21,13 @@ final class HomeCategoryFailure extends HomeState {
 final class HomeProductLoading extends HomeState {}
 
 final class HomeProductSuccess extends HomeState {
-  final ProductsModel productsModel;
-  HomeProductSuccess({required this.productsModel});
+  final List<ProductItemModel> products;
+  final bool hasMore;
+
+  HomeProductSuccess({
+    required this.products,
+    required this.hasMore,
+  });
 }
 
 final class HomeProductFailure extends HomeState {

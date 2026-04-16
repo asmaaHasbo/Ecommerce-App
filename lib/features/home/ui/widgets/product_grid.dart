@@ -10,8 +10,16 @@ import 'package:laza_ecommerce_app/features/home/ui/widgets/product_card.dart';
 import 'package:laza_ecommerce_app/features/product_details/ui/product_details_screen.dart';
 
 class ProductGrid extends StatelessWidget {
-  const ProductGrid({super.key, required this.products});
+  const ProductGrid({
+    super.key,
+    required this.products,
+    required this.scrollController,
+    required this.hasMore,
+  });
+
   final List<ProductItemModel> products;
+  final ScrollController scrollController;
+  final bool hasMore;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +29,7 @@ class ProductGrid extends StatelessWidget {
         children: [
           SizedBox(height: 16.h),
           GridView.builder(
+            controller: scrollController,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -43,11 +52,17 @@ class ProductGrid extends StatelessWidget {
                     ),
                   );
                 },
-
                 child: ProductCard(product: products[index]),
               );
             },
           ),
+          if (hasMore) ...[
+            SizedBox(height: 16.h),
+            Center(
+              child: CircularProgressIndicator(),
+            ),
+            SizedBox(height: 16.h),
+          ],
         ],
       ),
     );

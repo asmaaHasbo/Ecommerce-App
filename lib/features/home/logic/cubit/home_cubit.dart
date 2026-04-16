@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/category_model/categories_model.dart';
+import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_item_model.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_resquest_model.dart';
-import 'package:laza_ecommerce_app/features/home/data/models/products_model/products_model.dart';
 import 'package:laza_ecommerce_app/features/home/data/repositories/home_repo.dart';
 
 part 'home_state.dart';
@@ -11,8 +11,14 @@ class HomeCubit extends Cubit<HomeState> {
   final HomeRepo _homeRepo;
   HomeCubit(this._homeRepo) : super(HomeInitial());
 
+  // Pagination state
+  List<ProductItemModel> allProducts = [];
+  int currentPage = 1;
+  int? totalPages;
+  bool isLoadingMore = false;
+
   //============================ get Categories =================
-  Future<void> emitGetCategories() async {
+  Future<void> getCategories() async {
     emit(HomeCategoryLoading());
     log('Loading categories...');
 
@@ -27,10 +33,17 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  //============================ get product =================
-  Future<void> emitGetProducts() async {
+  //============================ get products (initial load) =================
+  Future<void> getProducts({bool refresh = false}) async {
+    if (refresh) {
+      // Reset pagination state
+      allProducts.clear();
+      currentPage = 1;
+      totalPages = null;
+    }
+
     emit(HomeProductLoading());
-    log('Loading products...');
+    log('Loading products page $currentPage...');
 
     try {
       final productsModel = await _homeRepo.getProducts(
@@ -42,22 +55,81 @@ class HomeCubit extends Cubit<HomeState> {
           isInStock: null,
           sortBy: null,
           sortOrder: null,
-          page: 1,
-          pageSize: 500,
+          page: currentPage,
+          pageSize: 20,
         ),
       );
 
-      if (productsModel.items != null && productsModel.items!.isNotEmpty) {
-        log('Products loaded: ${productsModel.items!.length}');
-      } else {
-        log('No products found in response');
+      if (productsModel.data != null) {
+        allProducts.addAll(productsModel.data!);
+        totalPages = productsModel.metadata?.numberOfPages;
+        log(
+          'Products loaded: ${productsModel.data!.length}, Total pages: $totalPages',
+        );
       }
-      
-      emit(HomeProductSuccess(productsModel: productsModel));
+
+      emit(
+        HomeProductSuccess(
+          products: List.from(allProducts),
+          hasMore: currentPage < (totalPages ?? 0),
+        ),
+      );
     } catch (e) {
       final errorMessage = e.toString().replaceAll('Exception: ', '');
       log('Error loading products: $errorMessage');
       emit(HomeProductFailure(errMsg: errorMessage));
+    }
+  }
+
+  //============================ load more products =================
+  Future<void> loadMoreProducts() async {
+    // Prevent multiple simultaneous loads
+    if (isLoadingMore) return;
+
+    // Check if there are more pages
+    if (totalPages != null && currentPage >= totalPages!) {
+      log('No more pages to load');
+      return;
+    }
+
+    isLoadingMore = true;
+    currentPage++;
+    log('Loading more products, page $currentPage...');
+
+    try {
+      final productsModel = await _homeRepo.getProducts(
+        ProductResquestModel(
+          searchTerm: null,
+          category: null,
+          minPrice: null,
+          maxPrice: null,
+          isInStock: null,
+          sortBy: null,
+          sortOrder: null,
+          page: currentPage,
+          pageSize: 20,
+        ),
+      );
+
+      if (productsModel.data != null) {
+        allProducts.addAll(productsModel.data!);
+        totalPages = productsModel.metadata?.numberOfPages;
+        log('More products loaded: ${productsModel.data!.length}');
+      }
+
+      emit(
+        HomeProductSuccess(
+          products: List.from(allProducts),
+          hasMore: currentPage < (totalPages ?? 0),
+        ),
+      );
+    } catch (e) {
+      final errorMessage = e.toString().replaceAll('Exception: ', '');
+      log('Error loading more products: $errorMessage');
+      // Don't emit failure, just log the error
+      currentPage--; // Revert page increment
+    } finally {
+      isLoadingMore = false;
     }
   }
 }

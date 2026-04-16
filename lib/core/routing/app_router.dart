@@ -42,8 +42,8 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) {
               final cubit = HomeCubit(getIt());
-              cubit.emitGetCategories();
-              cubit.emitGetProducts();
+              cubit.getCategories();
+              cubit.getProducts();
               return cubit;
             },
             child: MainScreen(),

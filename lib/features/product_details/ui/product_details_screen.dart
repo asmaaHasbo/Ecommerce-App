@@ -1,4 +1,3 @@
-// ==================== Product Item Model ====================
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -35,6 +34,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     log('from product detaiel product id ${widget.product.id}');
+
+    // Get product images
+    final List<String> productImages = [
+      if (widget.product.imageCover != null) widget.product.imageCover!,
+      if (widget.product.images != null) ...widget.product.images!,
+    ];
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
       body: Column(
@@ -44,7 +50,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: Column(
                 children: [
                   ProductImageSection(
-                    mainImage: widget.product.coverPictureUrl!,
+                    mainImage: widget.product.imageCover ?? '',
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -61,24 +67,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         children: [
                           ProductInfoSection(
                             category:
-                                widget.product.categories?.first ?? 'null',
-                            name: widget.product.name ?? 'no name',
-                            price: '\$${widget.product.price}',
+                                widget.product.category?.name ?? 'General',
+                            name: widget.product.title ?? 'No name',
+                            price: '\$${widget.product.price ?? 0}',
                           ),
                           SizedBox(height: 20.h),
-                          ProductImagesList(
-                            images: [
-                              widget.product.coverPictureUrl!,
-                              widget.product.coverPictureUrl!,
-                              widget.product.coverPictureUrl!,
-                            ],
-                            selectedIndex: selectedImageIndex,
-                            onImageSelected: (index) {
-                              setState(() {
-                                selectedImageIndex = index;
-                              });
-                            },
-                          ),
+                          if (productImages.isNotEmpty)
+                            ProductImagesList(
+                              images: productImages.toList(),
+                              selectedIndex: selectedImageIndex,
+                              onImageSelected: (index) {
+                                setState(() {
+                                  selectedImageIndex = index;
+                                });
+                              },
+                            ),
                           SizedBox(height: 24.h),
                           SizeSelectionSection(
                             sizes: ['S', 'M', 'XL', 'XXL'],
@@ -91,7 +94,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           SizedBox(height: 24.h),
                           DescriptionSection(
-                            description: widget.product.description!,
+                            description:
+                                widget.product.description ??
+                                'No description available',
                           ),
                           SizedBox(height: 24.h),
                           ReviewSection(
@@ -103,7 +108,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           SizedBox(height: 24.h),
                           TotalPriceSection(
-                            totalPrice: '${widget.product.price}',
+                            totalPrice: '\$${widget.product.price ?? 0}',
                           ),
                         ],
                       ),
@@ -113,7 +118,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
             ),
           ),
-          AddToCartButton(productId: widget.product.id!),
+          AddToCartButton(productId: widget.product.id ?? ''),
         ],
       ),
     );

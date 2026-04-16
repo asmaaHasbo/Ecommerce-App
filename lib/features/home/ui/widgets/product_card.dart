@@ -37,11 +37,10 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.r),
-                    child:
-                        widget.product.coverPictureUrl != null &&
-                            widget.product.coverPictureUrl!.isNotEmpty
+                    child: widget.product.imageCover != null &&
+                            widget.product.imageCover!.isNotEmpty
                         ? CachedNetworkImage(
-                            imageUrl: widget.product.coverPictureUrl!,
+                            imageUrl: widget.product.imageCover!,
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
@@ -103,14 +102,14 @@ class _ProductCardState extends State<ProductCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.product.name ?? 'No Name',
+                  widget.product.title ?? 'No Name',
                   style: AppTextStyles.font14w500Black,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  '\$${widget.product.price?.toStringAsFixed(2) ?? "0.00"}',
+                  '\$${widget.product.price?.toString() ?? "0"}',
                   style: AppTextStyles.font14w500Black.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
