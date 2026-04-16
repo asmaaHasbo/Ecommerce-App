@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:laza_ecommerce_app/core/helper/constant.dart';
-import 'package:laza_ecommerce_app/core/helper/shared_preferences.dart';
 import 'package:laza_ecommerce_app/core/networking/token_storage.dart';
 import 'package:laza_ecommerce_app/core/routing/app_router.dart';
 import 'package:laza_ecommerce_app/core/routing/routes.dart';
@@ -24,21 +22,17 @@ class _LazaAppState extends State<LazaApp> {
   }
 
   Future<void> _determineInitialRoute() async {
-    // تحديد الصفحة الأولى بناءً على حالة المستخدم
-    final hasSeenOnboarding = await SharedPrefHelper.getBool(SharedPrefKeys.hasSeenOnboarding);
+    // تحديد الصفحة الأولى بناءً على حالة تسجيل الدخول فقط
     final hasToken = await TokenStorage.hasToken();
 
     String nextRoute;
 
-    if (!hasSeenOnboarding) {
-      // أول مرة يفتح التطبيق
-      nextRoute = Routes.onboardingScreen;
-    } else if (!hasToken) {
-      // شاف الـ onboarding بس مش مسجل دخول
-      nextRoute = Routes.getStartedScreen;
-    } else {
-      // مسجل دخول
+    if (hasToken) {
+      // مسجل دخول → روح للـ Home
       nextRoute = Routes.mainScreen;
+    } else {
+      // مش مسجل دخول → روح للـ GetStarted
+      nextRoute = Routes.getStartedScreen;
     }
 
     setState(() {
@@ -52,11 +46,7 @@ class _LazaAppState extends State<LazaApp> {
     if (_initialRoute == null) {
       return const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
+        home: Scaffold(body: Center(child: CircularProgressIndicator())),
       );
     }
 

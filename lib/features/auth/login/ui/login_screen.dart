@@ -6,7 +6,6 @@ import 'package:laza_ecommerce_app/features/auth/login/ui/widgets/forget_passwor
 import 'package:laza_ecommerce_app/features/auth/login/ui/widgets/login_bloc_listener.dart';
 import 'package:laza_ecommerce_app/features/auth/login/ui/widgets/login_btn.dart';
 import 'package:laza_ecommerce_app/features/auth/login/ui/widgets/login_form.dart';
-import 'package:laza_ecommerce_app/features/auth/login/ui/widgets/term_and_condition.dart';
 import 'package:laza_ecommerce_app/features/auth/login/ui/widgets/welcome_text.dart';
 import 'package:laza_ecommerce_app/features/auth/sign_up/ui/widgets/rememper_me_row.dart';
 import 'package:laza_ecommerce_app/features/get_started/widgets/already_have_account_row.dart';
