@@ -21,7 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // تحميل الـ products والـ categories
     context.read<HomeCubit>().emitGetProducts();
+    context.read<HomeCubit>().emitGetCategories();
   }
 
   @override
