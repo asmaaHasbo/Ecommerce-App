@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // استيراد المكتبة
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:laza_ecommerce_app/core/shared/shimmer/image_shimmer.dart';
 
 class ProductImagesList extends StatelessWidget {
   final List<String> images;
@@ -43,8 +44,9 @@ class ProductImagesList extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: images[index],
                   fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
+                  placeholder: (context, url) => ImageShimmer(
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),

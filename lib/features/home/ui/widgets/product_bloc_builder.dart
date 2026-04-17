@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza_ecommerce_app/core/shared/setup_snack_bar_failure_state.dart';
+import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_item_model.dart';
 import 'package:laza_ecommerce_app/features/home/logic/cubit/home_cubit.dart';
 import 'package:laza_ecommerce_app/features/home/ui/widgets/product_grid.dart';
 
@@ -56,18 +57,34 @@ class _ProductBlocBuilderState extends State<ProductBlocBuilder> {
           current is HomeProductFailure,
       builder: (context, state) {
         log('builder received state: $state');
-        if (state is HomeProductLoading) {
-          return Center(child: CircularProgressIndicator());
-        } else if (state is HomeProductSuccess) {
-          return ProductGrid(
-            products: state.products,
-            scrollController: _scrollController,
-            hasMore: state.hasMore,
-          );
-        } else {
-          return SizedBox.shrink();
+        
+        final isLoading = state is HomeProductLoading;
+        
+        // Dummy products for loading state
+        final productsToShow = isLoading
+            ? List.generate(6, (index) => _getDummyProduct())
+            : (state is HomeProductSuccess ? state.products : <ProductItemModel>[]);
+
+        if (productsToShow.isEmpty && !isLoading) {
+          return const SizedBox.shrink();
         }
+
+        return ProductGrid(
+          products: productsToShow,
+          scrollController: _scrollController,
+          hasMore: state is HomeProductSuccess ? state.hasMore : false,
+          isLoading: isLoading,
+        );
       },
+    );
+  }
+
+  // Dummy product for loading state
+  ProductItemModel _getDummyProduct() {
+    return ProductItemModel(
+      title: 'Loading Product Name',
+      price: 99,
+      imageCover: '',
     );
   }
 }

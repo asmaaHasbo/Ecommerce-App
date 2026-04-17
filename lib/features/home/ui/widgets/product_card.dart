@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laza_ecommerce_app/core/shared/shimmer/image_shimmer.dart';
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_item_model.dart';
 
@@ -44,10 +45,8 @@ class _ProductCardState extends State<ProductCard> {
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.grey,
-                              ),
+                            placeholder: (context, url) => ImageShimmer(
+                              borderRadius: BorderRadius.circular(15.r),
                             ),
                             errorWidget: (context, url, error) => Center(
                               child: Icon(
