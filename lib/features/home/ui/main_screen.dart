@@ -8,7 +8,6 @@ import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
 import 'package:laza_ecommerce_app/features/cart/logic/cubit/cart_cubit.dart';
 import 'package:laza_ecommerce_app/features/cart/ui/cart_screen.dart';
 import 'package:laza_ecommerce_app/features/home/ui/home_screen.dart';
-import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
 import 'package:laza_ecommerce_app/features/wishlist/ui/wishlist_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -41,20 +40,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     // ScreenUtil.init(context);
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) {
-            final cubit = WishlistCubit(getIt());
-            cubit.getWishlist();
-            return cubit;
-          },
-        ),
-      ],
-      child: Scaffold(
-        body: _screens[_currentIndex],
-        bottomNavigationBar: _buildBottomNavigationBar(),
-      ),
+    return Scaffold(
+      body: _screens[_currentIndex],
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 

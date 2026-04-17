@@ -41,14 +41,25 @@ class AppRouter {
 
       case Routes.mainScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) {
-              final cubit = HomeCubit(getIt());
-              cubit.getCategories();
-              cubit.getProducts();
-              return cubit;
-            },
-            child: MainScreen(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) {
+                  final cubit = HomeCubit(getIt());
+                  cubit.getCategories();
+                  cubit.getProducts();
+                  return cubit;
+                },
+              ),
+              BlocProvider(
+                create: (context) {
+                  final cubit = WishlistCubit(getIt());
+                  cubit.getWishlist();
+                  return cubit;
+                },
+              ),
+            ],
+            child: const MainScreen(),
           ),
         );
 
