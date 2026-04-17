@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laza_ecommerce_app/core/shared/shimmer/image_shimmer.dart';
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_item_model.dart';
+import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductItemModel product;
@@ -15,7 +17,6 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,24 +71,43 @@ class _ProductCardState extends State<ProductCard> {
                 Positioned(
                   top: 8.h,
                   right: 8.w,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isFavorite = !isFavorite;
-                      });
+                  child: BlocBuilder<WishlistCubit, WishlistState>(
+                    builder: (context, state) {
+                      final wishlistCubit = context.read<WishlistCubit>();
+                      final isInWishlist = wishlistCubit.isInWishlist(
+                        widget.product.id ?? '',
+                      );
+
+                      return GestureDetector(
+                        onTap: () {
+                          if (widget.product.id != null) {
+                            if (isInWishlist) {
+                              wishlistCubit.removeFromWishlist(
+                                widget.product.id!,
+                              );
+                            } else {
+                              wishlistCubit.addToWishlist(
+                                widget.product.id!,
+                              );
+                            }
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(6.w),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            isInWishlist
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: isInWishlist ? Colors.red : Colors.grey,
+                            size: 20.sp,
+                          ),
+                        ),
+                      );
                     },
-                    child: Container(
-                      padding: EdgeInsets.all(6.w),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite ? Colors.red : Colors.grey,
-                        size: 20.sp,
-                      ),
-                    ),
                   ),
                 ),
               ],

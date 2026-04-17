@@ -28,14 +28,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _screens = [
       const HomeScreen(),
-      BlocProvider(
-        create: (context) {
-          final cubit = WishlistCubit(getIt());
-          cubit.getWishlist();
-          return cubit;
-        },
-        child: const WishlistScreen(),
-      ),
+      const WishlistScreen(),
       BlocProvider(
         create: (context) => CartCubit(getIt()..getCartProducts()),
         child: const CartScreen(),
@@ -48,9 +41,20 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     // ScreenUtil.init(context);
 
-    return Scaffold(
-      body: _screens[_currentIndex],
-      bottomNavigationBar: _buildBottomNavigationBar(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            final cubit = WishlistCubit(getIt());
+            cubit.getWishlist();
+            return cubit;
+          },
+        ),
+      ],
+      child: Scaffold(
+        body: _screens[_currentIndex],
+        bottomNavigationBar: _buildBottomNavigationBar(),
+      ),
     );
   }
 

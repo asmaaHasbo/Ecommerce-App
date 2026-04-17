@@ -26,25 +26,35 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<HomeCubit>().getCategories();
   }
 
+  Future<void> _onRefresh() async {
+    await Future.wait([
+      context.read<HomeCubit>().getProducts(refresh: true),
+      context.read<HomeCubit>().getCategories(),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const WelcomeHeader(),
-            SizedBox(height: 16.h),
-            const SearchBarWidget(),
-            SizedBox(height: 24.h),
-            CategoriesBlocBuilder(),
-            SizedBox(height: 24.h),
-            ProductBlocBuilder(),
-            // const ProductGrid(),
-            SizedBox(height: 24.h),
-          ],
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const WelcomeHeader(),
+              SizedBox(height: 16.h),
+              const SearchBarWidget(),
+              SizedBox(height: 24.h),
+              CategoriesBlocBuilder(),
+              SizedBox(height: 24.h),
+              ProductBlocBuilder(),
+              SizedBox(height: 24.h),
+            ],
+          ),
         ),
       ),
     );
