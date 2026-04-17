@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laza_ecommerce_app/core/shared/shimmer/image_shimmer.dart';
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_item_model.dart';
 
@@ -37,18 +38,15 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.r),
-                    child:
-                        widget.product.coverPictureUrl != null &&
-                            widget.product.coverPictureUrl!.isNotEmpty
+                    child: widget.product.imageCover != null &&
+                            widget.product.imageCover!.isNotEmpty
                         ? CachedNetworkImage(
-                            imageUrl: widget.product.coverPictureUrl!,
+                            imageUrl: widget.product.imageCover!,
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.grey,
-                              ),
+                            placeholder: (context, url) => ImageShimmer(
+                              borderRadius: BorderRadius.circular(15.r),
                             ),
                             errorWidget: (context, url, error) => Center(
                               child: Icon(
@@ -103,14 +101,14 @@ class _ProductCardState extends State<ProductCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.product.name ?? 'No Name',
+                  widget.product.title ?? 'No Name',
                   style: AppTextStyles.font14w500Black,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  '\$${widget.product.price?.toStringAsFixed(2) ?? "0.00"}',
+                  '\$${widget.product.price?.toString() ?? "0"}',
                   style: AppTextStyles.font14w500Black.copyWith(
                     fontWeight: FontWeight.w700,
                   ),

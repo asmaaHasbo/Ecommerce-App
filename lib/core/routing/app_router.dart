@@ -14,6 +14,8 @@ import 'package:laza_ecommerce_app/features/auth/sign_up/ui/sign_up_screen.dart'
 import 'package:laza_ecommerce_app/features/get_started/get_started_screen.dart';
 import 'package:laza_ecommerce_app/features/home/logic/cubit/home_cubit.dart';
 import 'package:laza_ecommerce_app/features/home/ui/main_screen.dart';
+import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:laza_ecommerce_app/features/wishlist/ui/wishlist_screen.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -42,8 +44,8 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) {
               final cubit = HomeCubit(getIt());
-              cubit.emitGetCategories();
-              cubit.emitGetProducts();
+              cubit.getCategories();
+              cubit.getProducts();
               return cubit;
             },
             child: MainScreen(),
@@ -71,6 +73,18 @@ class AppRouter {
         final email = settings.arguments as String;
         return MaterialPageRoute(
           builder: (_) => NewPasswordScreen(email: email),
+        );
+
+      case Routes.wishlistScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) {
+              final cubit = WishlistCubit(getIt());
+              cubit.getWishlist();
+              return cubit;
+            },
+            child: const WishlistScreen(),
+          ),
         );
 
       default:

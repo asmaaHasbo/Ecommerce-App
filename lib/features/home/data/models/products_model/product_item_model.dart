@@ -1,82 +1,118 @@
 class ProductItemModel {
+  int? sold;
+  List<String>? images;
+  List<SubcategoryModel>? subcategory;
+  int? ratingsQuantity;
   String? id;
-  String? productCode;
-  String? name;
+  String? title;
+  String? slug;
   String? description;
-  String? arabicName;
-  String? arabicDescription;
-  String? coverPictureUrl;
-  dynamic productPictures;
-  double? price;
-  int? stock;
-  double? weight;
-  String? color;
-  double?
-  rating; // غيرته من int? إلى double? عشان الـ response بيبعت rating كـ double (مثل 3.3333333)
-  int? reviewsCount;
-  int? discountPercentage;
-  String? sellerId;
-  List<String>? categories;
+  int? quantity;
+  int? price;
+  String? imageCover;
+  CategoryModel? category;
+  BrandModel? brand;
+  double? ratingsAverage;
+  String? createdAt;
+  String? updatedAt;
 
   ProductItemModel({
+    this.sold,
+    this.images,
+    this.subcategory,
+    this.ratingsQuantity,
     this.id,
-    this.productCode,
-    this.name,
+    this.title,
+    this.slug,
     this.description,
-    this.arabicName,
-    this.arabicDescription,
-    this.coverPictureUrl,
-    this.productPictures,
+    this.quantity,
     this.price,
-    this.stock,
-    this.weight,
-    this.color,
-    this.rating,
-    this.reviewsCount,
-    this.discountPercentage,
-    this.sellerId,
-    this.categories,
+    this.imageCover,
+    this.category,
+    this.brand,
+    this.ratingsAverage,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory ProductItemModel.fromJson(Map<String, dynamic> json) {
     return ProductItemModel(
-      id: json['id'] as String?,
-      productCode: json['productCode'] as String?,
-      name: json['name'] as String? ?? 'Unknown', // إضافة fallback
-      description: json['description'] as String? ?? '',
-      arabicName: json['arabicName'] as String? ?? '',
-      arabicDescription: json['arabicDescription'] as String? ?? '',
-      coverPictureUrl: json['coverPictureUrl'] as String? ?? '',
-      productPictures: json['productPictures'],
-      price: (json['price'] as num?)?.toDouble() ?? 0.0,
-      stock: json['stock'] as int? ?? 0,
-      weight: (json['weight'] as num?)?.toDouble() ?? 0.0,
-      color: json['color'] as String? ?? '',
-      rating: (json['rating'] as num?)?.toDouble() ?? 0.0, // تحويل إلى double
-      reviewsCount: json['reviewsCount'] as int? ?? 0,
-      discountPercentage: json['discountPercentage'] as int? ?? 0,
-      sellerId: json['sellerId'] as String? ?? '',
-      categories: (json['categories'] as List<dynamic>?)?.cast<String>() ?? [],
+      sold: json['sold'] as int?,
+      images: (json['images'] as List<dynamic>?)?.cast<String>(),
+      subcategory: (json['subcategory'] as List<dynamic>?)
+          ?.map((e) => SubcategoryModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      ratingsQuantity: json['ratingsQuantity'] as int?,
+      id: json['_id'] as String? ?? json['id'] as String?,
+      title: json['title'] as String?,
+      slug: json['slug'] as String?,
+      description: json['description'] as String?,
+      quantity: json['quantity'] as int?,
+      price: json['price'] as int?,
+      imageCover: json['imageCover'] as String?,
+      category: json['category'] != null
+          ? CategoryModel.fromJson(json['category'] as Map<String, dynamic>)
+          : null,
+      brand: json['brand'] != null
+          ? BrandModel.fromJson(json['brand'] as Map<String, dynamic>)
+          : null,
+      ratingsAverage: (json['ratingsAverage'] as num?)?.toDouble(),
+      createdAt: json['createdAt'] as String?,
+      updatedAt: json['updatedAt'] as String?,
     );
   }
+}
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'productCode': productCode,
-    'name': name,
-    'description': description,
-    'arabicName': arabicName,
-    'arabicDescription': arabicDescription,
-    'coverPictureUrl': coverPictureUrl,
-    'productPictures': productPictures,
-    'price': price,
-    'stock': stock,
-    'weight': weight,
-    'color': color,
-    'rating': rating,
-    'reviewsCount': reviewsCount,
-    'discountPercentage': discountPercentage,
-    'sellerId': sellerId,
-    'categories': categories,
-  };
+class SubcategoryModel {
+  String? id;
+  String? name;
+  String? slug;
+  String? category;
+
+  SubcategoryModel({this.id, this.name, this.slug, this.category});
+
+  factory SubcategoryModel.fromJson(Map<String, dynamic> json) {
+    return SubcategoryModel(
+      id: json['_id'] as String?,
+      name: json['name'] as String?,
+      slug: json['slug'] as String?,
+      category: json['category'] as String?,
+    );
+  }
+}
+
+class CategoryModel {
+  String? id;
+  String? name;
+  String? slug;
+  String? image;
+
+  CategoryModel({this.id, this.name, this.slug, this.image});
+
+  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    return CategoryModel(
+      id: json['_id'] as String?,
+      name: json['name'] as String?,
+      slug: json['slug'] as String?,
+      image: json['image'] as String?,
+    );
+  }
+}
+
+class BrandModel {
+  String? id;
+  String? name;
+  String? slug;
+  String? image;
+
+  BrandModel({this.id, this.name, this.slug, this.image});
+
+  factory BrandModel.fromJson(Map<String, dynamic> json) {
+    return BrandModel(
+      id: json['_id'] as String?,
+      name: json['name'] as String?,
+      slug: json['slug'] as String?,
+      image: json['image'] as String?,
+    );
+  }
 }

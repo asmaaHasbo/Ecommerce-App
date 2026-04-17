@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza_ecommerce_app/core/di/dependency_injection.dart';
-
 import 'package:laza_ecommerce_app/core/themes/app_colors.dart';
-
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
 import 'package:laza_ecommerce_app/features/cart/logic/cubit/cart_cubit.dart';
 import 'package:laza_ecommerce_app/features/cart/ui/cart_screen.dart';
 import 'package:laza_ecommerce_app/features/home/ui/home_screen.dart';
+import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:laza_ecommerce_app/features/wishlist/ui/wishlist_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -21,15 +21,28 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const WishlistScreen(),
-    BlocProvider(
-      create: (context) => CartCubit(getIt()..getCartProducts()),
-      child: const CartScreen(),
-    ),
-    const WalletScreen(),
-  ];
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      const HomeScreen(),
+      BlocProvider(
+        create: (context) {
+          final cubit = WishlistCubit(getIt());
+          cubit.getWishlist();
+          return cubit;
+        },
+        child: const WishlistScreen(),
+      ),
+      BlocProvider(
+        create: (context) => CartCubit(getIt()..getCartProducts()),
+        child: const CartScreen(),
+      ),
+      const WalletScreen(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,45 +135,6 @@ class _MainScreenState extends State<MainScreen> {
               // SizedBox(e 8),
               Text(label, style: AppTextStyles.font15w500Purple),
             ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class WishlistScreen extends StatelessWidget {
-  const WishlistScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text('Wishlist'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.favorite_border,
-              // size: ScreenUtil.setWidth(100),
-              color: AppColors.iconGray,
-            ),
-            // SizedBox(height: ScreenUtil.setHeight(20)),
-            const Text(
-              'Your wishlist is empty',
-              // style: AppTextStyles.font17w600Black,
-            ),
-            // SizedBox(height: ScreenUtil.setHeight(8)),
-            const Text(
-              'Add items you like to your wishlist',
-              // style: AppTextStyles.font14w500Black,
-            ),
           ],
         ),
       ),

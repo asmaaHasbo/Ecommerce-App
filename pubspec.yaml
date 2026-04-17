@@ -46,6 +46,10 @@ dependencies:
   flutter_bloc: ^9.1.1
   
   cached_network_image: ^3.4.1
+
+  shimmer: ^3.0.0
+
+  redacted: ^1.0.13
   #networking package, supports Interceptors, Aborting and canceling a request,
   dio: ^5.9.0
   #retrofit.dart is an dio client generator using source_gen and inspired by Chopper and Retrofit.

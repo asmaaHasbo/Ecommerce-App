@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // استيراد المكتبة
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:laza_ecommerce_app/core/shared/shimmer/image_shimmer.dart';
 import 'package:laza_ecommerce_app/features/product_details/ui/widget/back_button_widget.dart';
 import 'package:laza_ecommerce_app/features/product_details/ui/widget/cart_button_widget.dart';
 
@@ -22,8 +23,9 @@ class ProductImageSection extends StatelessWidget {
               imageUrl: mainImage,
               height: 350.h,
               fit: BoxFit.contain,
-              placeholder: (context, url) =>
-                  const Center(child: CircularProgressIndicator()),
+              placeholder: (context, url) => ImageShimmer(
+                height: 350.h,
+              ),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),

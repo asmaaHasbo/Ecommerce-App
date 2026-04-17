@@ -22,6 +22,9 @@ import 'package:laza_ecommerce_app/features/cart/logic/cubit/cart_cubit.dart';
 import 'package:laza_ecommerce_app/features/home/data/datasources/home_remote.dart';
 import 'package:laza_ecommerce_app/features/home/data/repositories/home_repo.dart';
 import 'package:laza_ecommerce_app/features/home/logic/cubit/home_cubit.dart';
+import 'package:laza_ecommerce_app/features/wishlist/data/datasources/wishlist_remote.dart';
+import 'package:laza_ecommerce_app/features/wishlist/data/repositories/wishlist_repo.dart';
+import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -61,4 +64,9 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<CartApiService>(() => CartApiService(dio));
   getIt.registerLazySingleton<CartRepo>(() => CartRepo(getIt()));
   getIt.registerFactory<CartCubit>(() => CartCubit(getIt()));
+
+  //================= wishlist ===============
+  getIt.registerLazySingleton<WishlistRemote>(() => WishlistRemote());
+  getIt.registerLazySingleton<WishlistRepo>(() => WishlistRepo(getIt()));
+  getIt.registerFactory<WishlistCubit>(() => WishlistCubit(getIt()));
 }

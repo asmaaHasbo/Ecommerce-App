@@ -68,7 +68,7 @@ class DioFactory {
 
           /// لو Token موجود، أضفه للـ headers
           if (token != null && token.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer $token';
+            options.headers['token'] = token;
           }
 
           handler.next(options);

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laza_ecommerce_app/core/shared/shimmer/image_shimmer.dart';
 import 'package:laza_ecommerce_app/core/themes/app_colors.dart';
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/category_model/category_item_model.dart';
@@ -97,10 +98,10 @@ class _CategoriesListViewState extends State<CategoriesListView> {
                   width: 24.w,
                   height: 24.h,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => Icon(
-                    Icons.category_outlined,
-                    size: 24.sp,
-                    color: isSelected ? Colors.white : AppColors.mainColor,
+                  placeholder: (context, url) => ImageShimmer(
+                    width: 24.w,
+                    height: 24.h,
+                    borderRadius: BorderRadius.circular(6.r),
                   ),
                   errorWidget: (context, url, error) => Icon(
                     Icons.category_outlined,
