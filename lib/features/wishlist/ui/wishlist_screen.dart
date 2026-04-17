@@ -17,12 +17,6 @@ class WishlistScreen extends StatefulWidget {
 
 class _WishlistScreenState extends State<WishlistScreen> {
   @override
-  void initState() {
-    super.initState();
-    context.read<WishlistCubit>().getWishlist();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,

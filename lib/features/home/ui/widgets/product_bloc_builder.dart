@@ -6,6 +6,7 @@ import 'package:laza_ecommerce_app/core/shared/setup_snack_bar_failure_state.dar
 import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_item_model.dart';
 import 'package:laza_ecommerce_app/features/home/logic/cubit/home_cubit.dart';
 import 'package:laza_ecommerce_app/features/home/ui/widgets/product_grid.dart';
+import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
 
 class ProductBlocBuilder extends StatefulWidget {
   const ProductBlocBuilder({super.key});
@@ -44,38 +45,49 @@ class _ProductBlocBuilderState extends State<ProductBlocBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit, HomeState>(
-      listenWhen: (previous, current) => current is HomeProductFailure,
-      listener: (context, state) {
-        if (state is HomeProductFailure) {
-          setupSnackbarForFailureState(context, state.errMsg);
+    return BlocListener<WishlistCubit, WishlistState>(
+      listener: (context, wishlistState) {
+        // Rebuild when wishlist changes
+        if (wishlistState is WishlistLoaded ||
+            wishlistState is WishlistActionSuccess) {
+          setState(() {});
         }
       },
-      buildWhen: (previous, current) =>
-          current is HomeProductLoading ||
-          current is HomeProductSuccess ||
-          current is HomeProductFailure,
-      builder: (context, state) {
-        log('builder received state: $state');
-        
-        final isLoading = state is HomeProductLoading;
-        
-        // Dummy products for loading state
-        final productsToShow = isLoading
-            ? List.generate(6, (index) => _getDummyProduct())
-            : (state is HomeProductSuccess ? state.products : <ProductItemModel>[]);
+      child: BlocConsumer<HomeCubit, HomeState>(
+        listenWhen: (previous, current) => current is HomeProductFailure,
+        listener: (context, state) {
+          if (state is HomeProductFailure) {
+            setupSnackbarForFailureState(context, state.errMsg);
+          }
+        },
+        buildWhen: (previous, current) =>
+            current is HomeProductLoading ||
+            current is HomeProductSuccess ||
+            current is HomeProductFailure,
+        builder: (context, state) {
+          log('builder received state: $state');
 
-        if (productsToShow.isEmpty && !isLoading) {
-          return const SizedBox.shrink();
-        }
+          final isLoading = state is HomeProductLoading;
 
-        return ProductGrid(
-          products: productsToShow,
-          scrollController: _scrollController,
-          hasMore: state is HomeProductSuccess ? state.hasMore : false,
-          isLoading: isLoading,
-        );
-      },
+          // Dummy products for loading state
+          final productsToShow = isLoading
+              ? List.generate(6, (index) => _getDummyProduct())
+              : (state is HomeProductSuccess
+                  ? state.products
+                  : <ProductItemModel>[]);
+
+          if (productsToShow.isEmpty && !isLoading) {
+            return const SizedBox.shrink();
+          }
+
+          return ProductGrid(
+            products: productsToShow,
+            scrollController: _scrollController,
+            hasMore: state is HomeProductSuccess ? state.hasMore : false,
+            isLoading: isLoading,
+          );
+        },
+      ),
     );
   }
 
