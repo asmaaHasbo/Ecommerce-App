@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza_ecommerce_app/core/shared/setup_snack_bar_failure_state.dart';
@@ -29,6 +31,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
           }
 
           if (state is WishlistActionError) {
+            log('Wishlist action failed: ${state.errorMessage}');
             setupSnackbarForFailureState(context, state.errorMessage);
           }
         },

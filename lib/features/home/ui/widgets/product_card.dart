@@ -72,6 +72,11 @@ class _ProductCardState extends State<ProductCard> {
                   top: 8.h,
                   right: 8.w,
                   child: BlocBuilder<WishlistCubit, WishlistState>(
+                    buildWhen: (previous, current) {
+                      // Rebuild when wishlist is loaded or action succeeds
+                      return current is WishlistLoaded ||
+                          current is WishlistActionSuccess;
+                    },
                     builder: (context, state) {
                       final wishlistCubit = context.read<WishlistCubit>();
                       final isInWishlist = wishlistCubit.isInWishlist(
