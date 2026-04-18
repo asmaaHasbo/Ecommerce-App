@@ -27,7 +27,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
         listener: (BuildContext context, WishlistState state) {
           if (state is WishlistActionSuccess) {
             setupSnackBarForSuccessState(context, state.message);
-            context.read<WishlistCubit>().getWishlist();
           }
 
           if (state is WishlistActionError) {

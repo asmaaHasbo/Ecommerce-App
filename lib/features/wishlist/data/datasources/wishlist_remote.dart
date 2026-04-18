@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:laza_ecommerce_app/core/error/api_error_handler.dart';
 import 'package:laza_ecommerce_app/core/networking/api_end_pontis.dart';
 import 'package:laza_ecommerce_app/core/networking/dio_factory.dart';
+import 'package:laza_ecommerce_app/features/wishlist/data/models/remove_wishlist_response_model.dart';
 import 'package:laza_ecommerce_app/features/wishlist/data/models/wishlist_response_model.dart';
 
 class WishlistRemote {
@@ -39,13 +40,13 @@ class WishlistRemote {
   }
 
   //========== remove from wishlist ==========//
-  Future<WishlistResponseModel> removeFromWishlist(String productId) async {
+  Future<RemoveWishlistResponseModel> removeFromWishlist(String productId) async {
     try {
       final response = await _dio.delete(
         '${ApiEndPontis.baseUrl}${ApiEndPontis.wishlist}/$productId',
       );
 
-      return WishlistResponseModel.fromJson(response.data);
+      return RemoveWishlistResponseModel.fromJson(response.data);
     } catch (e) {
       final exception = ApiErrorHandler.handle(e);
       throw Exception(exception.message);

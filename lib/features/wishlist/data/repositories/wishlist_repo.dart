@@ -1,4 +1,5 @@
 import 'package:laza_ecommerce_app/features/wishlist/data/datasources/wishlist_remote.dart';
+import 'package:laza_ecommerce_app/features/wishlist/data/models/remove_wishlist_response_model.dart';
 import 'package:laza_ecommerce_app/features/wishlist/data/models/wishlist_response_model.dart';
 
 class WishlistRepo {
@@ -14,7 +15,7 @@ class WishlistRepo {
     return await _remote.getWishlist();
   }
 
-  Future<WishlistResponseModel> removeFromWishlist(String productId) async {
+  Future<RemoveWishlistResponseModel> removeFromWishlist(String productId) async {
     return await _remote.removeFromWishlist(productId);
   }
 }

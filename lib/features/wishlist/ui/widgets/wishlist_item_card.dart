@@ -15,22 +15,19 @@ import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.
 class WishlistItemCard extends StatelessWidget {
   final ProductItemModel product;
 
-  const WishlistItemCard({
-    super.key,
-    required this.product,
-  });
+  const WishlistItemCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 140.h,
-      margin: EdgeInsets.only(bottom: 16.h),
+      // margin: EdgeInsets.only(bottom: 10.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white60,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.mainColor.withOpacity(0.08),
+            color: AppColors.mainColor.withOpacity(0.3),
             blurRadius: 20,
             offset: const Offset(0, 4),
             spreadRadius: 0,
@@ -70,10 +67,7 @@ class WishlistItemCard extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Colors.transparent,
-            Colors.black.withOpacity(0.1),
-          ],
+          colors: [Colors.transparent, Colors.black.withOpacity(0.1)],
         ),
       ),
       child: ClipRRect(
@@ -110,63 +104,65 @@ class WishlistItemCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 16.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                product.title ?? 'Product',
-                style: AppTextStyles.font16w600black.copyWith(
-                  fontSize: 15.sp,
-                  height: 1.3,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              if (product.brand?.name != null) ...[
-                SizedBox(height: 6.h),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.lighterGray,
-                    borderRadius: BorderRadius.circular(6.r),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  product.title ?? 'Product',
+                  style: AppTextStyles.font16w600black.copyWith(
+                    fontSize: 15.sp,
+                    height: 1.3,
                   ),
-                  child: Text(
-                    product.brand!.name!,
-                    style: AppTextStyles.font12w400gray.copyWith(
-                      fontSize: 11.sp,
-                      color: AppColors.lightGray,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (product.brand?.name != null) ...[
+                  SizedBox(height: 6.h),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 4.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.lighterGray,
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    child: Text(
+                      product.brand!.name!,
+                      style: AppTextStyles.font12w400gray.copyWith(
+                        fontSize: 11.sp,
+                        color: AppColors.lightGray,
+                      ),
                     ),
                   ),
-                ),
+                ],
               ],
-            ],
+            ),
           ),
-          SizedBox(height: 12.h),
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.mainColor.withOpacity(0.15),
-                      AppColors.mainColor.withOpacity(0.08),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Text(
-                  '\$${product.price ?? 0}',
-                  style: AppTextStyles.font17w600Black.copyWith(
-                    color: AppColors.mainColor,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+          SizedBox(height: 8.h),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.mainColor.withOpacity(0.15),
+                  AppColors.mainColor.withOpacity(0.08),
+                ],
               ),
-            ],
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Text(
+              '\$${product.price ?? 0}',
+              style: AppTextStyles.font17w600Black.copyWith(
+                color: AppColors.mainColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
         ],
       ),
@@ -196,11 +192,7 @@ class WishlistItemCard extends StatelessWidget {
               context.read<WishlistCubit>().removeFromWishlist(product.id!);
             }
           },
-          icon: Icon(
-            Icons.favorite,
-            color: AppColors.orange,
-            size: 22.sp,
-          ),
+          icon: Icon(Icons.favorite, color: AppColors.orange, size: 22.sp),
           style: IconButton.styleFrom(
             padding: EdgeInsets.all(8.w),
             minimumSize: Size(36.w, 36.h),
