@@ -22,38 +22,26 @@ class CategoriesBlocBuilder extends StatelessWidget {
         log('builder received state: $state');
 
         final isLoading = state is HomeCategoryLoading;
-        
-        // Dummy categories for loading state
-        final categoriesToShow = isLoading
-            ? List.generate(5, (index) => _getDummyCategory())
-            : (state is HomeCategorySuccess 
-                ? state.categoryModel.categories ?? [] 
-                : <CategoryItemModel>[]);
+        final categories = state is HomeCategorySuccess 
+            ? state.categoryModel.categories ?? [] 
+            : <CategoryItemModel>[];
 
         if (state is HomeCategoryFailure) {
           return setupSnackbarForFailureState(context, state.errMsg);
         }
 
-        if (categoriesToShow.isEmpty && !isLoading) {
+        if (categories.isEmpty && !isLoading) {
           return const SizedBox.shrink();
         }
 
         return CategoriesListView(
-          categoriesList: categoriesToShow,
+          categoriesList: categories,
+          isLoading: isLoading,
         ).redactedHelper(
           context: context,
           isLoading: isLoading,
         );
       },
-    );
-  }
-
-  // Dummy category for loading state
-  CategoryItemModel _getDummyCategory() {
-    return CategoryItemModel(
-      id: 'loading',
-      name: 'Category',
-      image: '',
     );
   }
 }

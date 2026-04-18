@@ -8,8 +8,13 @@ import 'package:laza_ecommerce_app/features/home/data/models/category_model/cate
 
 class CategoriesListView extends StatefulWidget {
   final List<CategoryItemModel> categoriesList;
+  final bool isLoading;
 
-  const CategoriesListView({required this.categoriesList, super.key});
+  const CategoriesListView({
+    required this.categoriesList,
+    this.isLoading = false,
+    super.key,
+  });
 
   @override
   State<CategoriesListView> createState() => _CategoriesListViewState();
@@ -36,14 +41,23 @@ class _CategoriesListViewState extends State<CategoriesListView> {
             height: 60.h,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: widget.categoriesList.length + 1, // +1 للـ "All"
+              itemCount: widget.isLoading ? 5 : widget.categoriesList.length + 1,
               itemBuilder: (context, index) {
+                if (widget.isLoading) {
+                  return _buildCategoryChip(
+                    id: null,
+                    name: '',
+                    imageUrl: '',
+                    isSelected: false,
+                  );
+                }
+
                 // أول عنصر هو "All"
                 if (index == 0) {
                   return _buildCategoryChip(
                     id: 'all',
                     name: 'All',
-                    imageUrl: null, // مفيش صورة للـ "All"
+                    imageUrl: null,
                     isSelected: selectedCategoryId == 'all',
                   );
                 }
@@ -51,9 +65,9 @@ class _CategoriesListViewState extends State<CategoriesListView> {
                 // باقي الـ categories
                 final category = widget.categoriesList[index - 1];
                 return _buildCategoryChip(
-                  id: category.id ?? '',
-                  name: category.name ?? 'No Name',
-                  imageUrl: category.image, // صورة الـ category
+                  id: category.id,
+                  name: category.name ?? '',
+                  imageUrl: category.image,
                   isSelected: selectedCategoryId == category.id,
                 );
               },
@@ -65,17 +79,19 @@ class _CategoriesListViewState extends State<CategoriesListView> {
   }
 
   Widget _buildCategoryChip({
-    required String id,
+    required String? id,
     required String name,
     required String? imageUrl,
     required bool isSelected,
   }) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedCategoryId = id;
-        });
-      },
+      onTap: id != null
+          ? () {
+              setState(() {
+                selectedCategoryId = id;
+              });
+            }
+          : null,
       child: Container(
         margin: EdgeInsets.only(right: 12.w),
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),

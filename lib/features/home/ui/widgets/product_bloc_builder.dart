@@ -68,35 +68,22 @@ class _ProductBlocBuilderState extends State<ProductBlocBuilder> {
           log('builder received state: $state');
 
           final isLoading = state is HomeProductLoading;
+          final products = state is HomeProductSuccess
+              ? state.products
+              : <ProductItemModel>[];
 
-          // Dummy products for loading state
-          final productsToShow = isLoading
-              ? List.generate(6, (index) => _getDummyProduct())
-              : (state is HomeProductSuccess
-                  ? state.products
-                  : <ProductItemModel>[]);
-
-          if (productsToShow.isEmpty && !isLoading) {
+          if (products.isEmpty && !isLoading) {
             return const SizedBox.shrink();
           }
 
           return ProductGrid(
-            products: productsToShow,
+            products: products,
             scrollController: _scrollController,
             hasMore: state is HomeProductSuccess ? state.hasMore : false,
             isLoading: isLoading,
           );
         },
       ),
-    );
-  }
-
-  // Dummy product for loading state
-  ProductItemModel _getDummyProduct() {
-    return ProductItemModel(
-      title: 'Loading Product Name',
-      price: 99,
-      imageCover: '',
     );
   }
 }

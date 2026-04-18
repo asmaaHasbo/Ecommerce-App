@@ -13,9 +13,9 @@ import 'package:laza_ecommerce_app/features/home/data/models/products_model/prod
 import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
 
 class WishlistItemCard extends StatelessWidget {
-  final ProductItemModel product;
+  final ProductItemModel? product;
 
-  const WishlistItemCard({super.key, required this.product});
+  const WishlistItemCard({super.key, this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -75,26 +75,35 @@ class WishlistItemCard extends StatelessWidget {
           topLeft: Radius.circular(16.r),
           bottomLeft: Radius.circular(16.r),
         ),
-        child: CachedNetworkImage(
-          imageUrl: product.imageCover ?? '',
-          fit: BoxFit.cover,
-          placeholder: (context, url) => ImageShimmer(
-            width: 110.w,
-            height: 140.h,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16.r),
-              bottomLeft: Radius.circular(16.r),
-            ),
-          ),
-          errorWidget: (context, url, error) => Container(
-            color: AppColors.lighterGray,
-            child: Icon(
-              Icons.image_not_supported_outlined,
-              color: AppColors.lightGray,
-              size: 40.sp,
-            ),
-          ),
-        ),
+        child: product?.imageCover != null && product!.imageCover!.isNotEmpty
+            ? CachedNetworkImage(
+                imageUrl: product!.imageCover!,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => ImageShimmer(
+                  width: 110.w,
+                  height: 140.h,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.r),
+                    bottomLeft: Radius.circular(16.r),
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: AppColors.lighterGray,
+                  child: Icon(
+                    Icons.image_not_supported_outlined,
+                    color: AppColors.lightGray,
+                    size: 40.sp,
+                  ),
+                ),
+              )
+            : ImageShimmer(
+                width: 110.w,
+                height: 140.h,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.r),
+                  bottomLeft: Radius.circular(16.r),
+                ),
+              ),
       ),
     );
   }
@@ -112,7 +121,7 @@ class WishlistItemCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  product.title ?? 'Product',
+                  product?.title ?? '',
                   style: AppTextStyles.font16w600black.copyWith(
                     fontSize: 15.sp,
                     height: 1.3,
@@ -120,7 +129,7 @@ class WishlistItemCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                if (product.brand?.name != null) ...[
+                if (product?.brand?.name != null) ...[
                   SizedBox(height: 6.h),
                   Container(
                     padding: EdgeInsets.symmetric(
@@ -132,7 +141,7 @@ class WishlistItemCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Text(
-                      product.brand!.name!,
+                      product!.brand!.name!,
                       style: AppTextStyles.font12w400gray.copyWith(
                         fontSize: 11.sp,
                         color: AppColors.lightGray,
@@ -156,7 +165,7 @@ class WishlistItemCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Text(
-              '\$${product.price ?? 0}',
+              '\$${product?.price ?? ""}',
               style: AppTextStyles.font17w600Black.copyWith(
                 color: AppColors.mainColor,
                 fontSize: 18.sp,
@@ -186,12 +195,12 @@ class WishlistItemCard extends StatelessWidget {
           ],
         ),
         child: IconButton(
-          onPressed: () {
-            log('Remove from wishlist: ${product.id}');
-            if (product.id != null) {
-              context.read<WishlistCubit>().removeFromWishlist(product.id!);
-            }
-          },
+          onPressed: product?.id != null
+              ? () {
+                  log('Remove from wishlist: ${product!.id}');
+                  context.read<WishlistCubit>().removeFromWishlist(product!.id!);
+                }
+              : null,
           icon: Icon(Icons.favorite, color: AppColors.orange, size: 22.sp),
           style: IconButton.styleFrom(
             padding: EdgeInsets.all(8.w),

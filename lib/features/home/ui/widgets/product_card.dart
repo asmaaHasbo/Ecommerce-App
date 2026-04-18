@@ -8,16 +8,15 @@ import 'package:laza_ecommerce_app/features/home/data/models/products_model/prod
 import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
 
 class ProductCard extends StatefulWidget {
-  final ProductItemModel product;
+  final ProductItemModel? product;
 
-  const ProductCard({super.key, required this.product});
+  const ProductCard({super.key, this.product});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
 }
 
 class _ProductCardState extends State<ProductCard> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,10 +38,11 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.r),
-                    child: widget.product.imageCover != null &&
-                            widget.product.imageCover!.isNotEmpty
+                    child:
+                        widget.product?.imageCover != null &&
+                            widget.product!.imageCover!.isNotEmpty
                         ? CachedNetworkImage(
-                            imageUrl: widget.product.imageCover!,
+                            imageUrl: widget.product!.imageCover!,
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
@@ -57,12 +57,8 @@ class _ProductCardState extends State<ProductCard> {
                               ),
                             ),
                           )
-                        : Center(
-                            child: Icon(
-                              Icons.checkroom,
-                              size: 80.sp,
-                              color: Colors.grey[300],
-                            ),
+                        : ImageShimmer(
+                            borderRadius: BorderRadius.circular(15.r),
                           ),
                   ),
                 ),
@@ -73,30 +69,31 @@ class _ProductCardState extends State<ProductCard> {
                   right: 8.w,
                   child: BlocBuilder<WishlistCubit, WishlistState>(
                     buildWhen: (previous, current) {
-                      // Rebuild when wishlist is loaded or action succeeds
+                      // Rebuild on any state that contains product IDs
                       return current is WishlistLoaded ||
-                          current is WishlistActionSuccess;
+                          current is WishlistActionSuccess ||
+                          current is WishlistInitial;
                     },
                     builder: (context, state) {
                       final wishlistCubit = context.read<WishlistCubit>();
-                      final isInWishlist = wishlistCubit.isInWishlist(
-                        widget.product.id ?? '',
-                      );
+                      final isInWishlist = widget.product?.id != null
+                          ? wishlistCubit.isInWishlist(widget.product!.id!)
+                          : false;
 
                       return GestureDetector(
-                        onTap: () {
-                          if (widget.product.id != null) {
-                            if (isInWishlist) {
-                              wishlistCubit.removeFromWishlist(
-                                widget.product.id!,
-                              );
-                            } else {
-                              wishlistCubit.addToWishlist(
-                                widget.product.id!,
-                              );
-                            }
-                          }
-                        },
+                        onTap: widget.product?.id != null
+                            ? () {
+                                if (isInWishlist) {
+                                  wishlistCubit.removeFromWishlist(
+                                    widget.product!.id!,
+                                  );
+                                } else {
+                                  wishlistCubit.addToWishlist(
+                                    widget.product!.id!,
+                                  );
+                                }
+                              }
+                            : null,
                         child: Container(
                           padding: EdgeInsets.all(6.w),
                           decoration: const BoxDecoration(
@@ -126,14 +123,14 @@ class _ProductCardState extends State<ProductCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.product.title ?? 'No Name',
+                  widget.product?.title ?? '',
                   style: AppTextStyles.font14w500Black,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  '\$${widget.product.price?.toString() ?? "0"}',
+                  '\$${widget.product?.price?.toString() ?? ""}',
                   style: AppTextStyles.font14w500Black.copyWith(
                     fontWeight: FontWeight.w700,
                   ),

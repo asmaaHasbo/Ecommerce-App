@@ -30,47 +30,56 @@ class WishlistCubit extends Cubit<WishlistState> {
 
   //============================ add to wishlist =================
   Future<void> addToWishlist(String productId) async {
-    emit(WishlistActionLoading());
-
     try {
+      // Update local state immediately for instant UI feedback
+      wishlistProductIds.add(productId);
+      emit(WishlistLoaded(wishlistProductIds));
+      
       final response = await _repo.addToWishlist(productId);
-      wishlistProducts = response.data ?? [];
+      
+      // Update with server response (IDs only)
       wishlistProductIds = response.getProductIds();
       
-      // Emit success message first
+      // Emit success message
       emit(WishlistActionSuccess(
         message: response.message ?? 'Product added to wishlist',
         productIds: wishlistProductIds,
       ));
       
-      // Then immediately emit loaded state with updated list
+      // Emit loaded state with server response
       emit(WishlistLoaded(wishlistProductIds));
     } catch (e) {
+      // Revert local change on error
+      wishlistProductIds.remove(productId);
+      emit(WishlistLoaded(wishlistProductIds));
       emit(WishlistActionError(e.toString().replaceAll('Exception: ', '')));
     }
   }
 
   Future<void> removeFromWishlist(String productId) async {
-    emit(WishlistActionLoading());
-
     try {
+      // Update local state immediately for instant UI feedback
+      wishlistProductIds.remove(productId);
+      wishlistProducts.removeWhere((product) => product.id == productId);
+      emit(WishlistLoaded(wishlistProductIds));
+      
       final response = await _repo.removeFromWishlist(productId);
       
       // Update the wishlist IDs from the response
       wishlistProductIds = response.data ?? [];
       
-      // Remove the product from the local list
-      wishlistProducts.removeWhere((product) => product.id == productId);
-      
-      // Emit success message first
+      // Emit success message
       emit(WishlistActionSuccess(
         message: response.message ?? 'Product removed from wishlist',
         productIds: wishlistProductIds,
       ));
       
-      // Then immediately emit loaded state with updated list
+      // Emit loaded state with server response
       emit(WishlistLoaded(wishlistProductIds));
     } catch (e) {
+      // Revert local change on error
+      wishlistProductIds.add(productId);
+      emit(WishlistLoaded(wishlistProductIds));
       emit(WishlistActionError(e.toString().replaceAll('Exception: ', '')));
     }
   }

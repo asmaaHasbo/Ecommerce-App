@@ -8,6 +8,7 @@ import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
 import 'package:laza_ecommerce_app/features/cart/logic/cubit/cart_cubit.dart';
 import 'package:laza_ecommerce_app/features/cart/ui/cart_screen.dart';
 import 'package:laza_ecommerce_app/features/home/ui/home_screen.dart';
+import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
 import 'package:laza_ecommerce_app/features/wishlist/ui/wishlist_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -108,6 +109,11 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           _currentIndex = index;
         });
+        
+        // Refresh wishlist when navigating to wishlist tab
+        if (index == 1) {
+          context.read<WishlistCubit>().getWishlist();
+        }
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),

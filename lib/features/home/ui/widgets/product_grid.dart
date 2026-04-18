@@ -26,6 +26,8 @@ class ProductGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final itemCount = isLoading ? 6 : products.length;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
@@ -41,11 +43,18 @@ class ProductGrid extends StatelessWidget {
               mainAxisSpacing: 12.h,
               childAspectRatio: 0.7,
             ),
-            itemCount: products.length,
+            itemCount: itemCount,
             itemBuilder: (context, index) {
+              if (isLoading) {
+                return ProductCard(product: null).redactedHelper(
+                  context: context,
+                  isLoading: true,
+                );
+              }
+
               log('form grid ui product length :${products.length}');
               return GestureDetector(
-                onTap: isLoading ? null : () {
+                onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => BlocProvider(
@@ -55,10 +64,7 @@ class ProductGrid extends StatelessWidget {
                     ),
                   );
                 },
-                child: ProductCard(product: products[index]).redactedHelper(
-                  context: context,
-                  isLoading: isLoading,
-                ),
+                child: ProductCard(product: products[index]),
               );
             },
           ),
