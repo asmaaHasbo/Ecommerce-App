@@ -198,7 +198,9 @@ class WishlistItemCard extends StatelessWidget {
           onPressed: product?.id != null
               ? () {
                   log('Remove from wishlist: ${product!.id}');
-                  context.read<WishlistCubit>().removeFromWishlist(product!.id!);
+                  context.read<WishlistCubit>().removeFromWishlist(
+                    product!.id!,
+                  );
                 }
               : null,
           icon: Icon(Icons.favorite, color: AppColors.orange, size: 22.sp),
