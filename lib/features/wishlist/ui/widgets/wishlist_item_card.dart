@@ -1,3 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -106,7 +110,7 @@ class WishlistItemCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 16.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,6 +143,7 @@ class WishlistItemCard extends StatelessWidget {
               ],
             ],
           ),
+          SizedBox(height: 12.h),
           Row(
             children: [
               Container(
@@ -186,6 +191,7 @@ class WishlistItemCard extends StatelessWidget {
         ),
         child: IconButton(
           onPressed: () {
+            log('Remove from wishlist: ${product.id}');
             if (product.id != null) {
               context.read<WishlistCubit>().removeFromWishlist(product.id!);
             }

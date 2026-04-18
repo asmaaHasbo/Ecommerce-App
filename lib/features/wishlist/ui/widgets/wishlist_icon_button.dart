@@ -21,6 +21,11 @@ class WishlistIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WishlistCubit, WishlistState>(
+      buildWhen: (previous, current) {
+        // Rebuild when wishlist is loaded or action succeeds
+        return current is WishlistLoaded ||
+            current is WishlistActionSuccess;
+      },
       builder: (context, state) {
         final wishlistCubit = context.read<WishlistCubit>();
         final isInWishlist = wishlistCubit.isInWishlist(productId);

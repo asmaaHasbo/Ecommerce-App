@@ -17,6 +17,9 @@ class HomeCubit extends Cubit<HomeState> {
   int? totalPages;
   bool isLoadingMore = false;
 
+  // Selected category for filtering
+  String? selectedCategoryId;
+
   //============================ get Categories =================
   Future<void> getCategories() async {
     emit(HomeCategoryLoading());
@@ -40,6 +43,7 @@ class HomeCubit extends Cubit<HomeState> {
       allProducts.clear();
       currentPage = 1;
       totalPages = null;
+      selectedCategoryId = null;
     }
 
     emit(HomeProductLoading());
@@ -49,7 +53,7 @@ class HomeCubit extends Cubit<HomeState> {
       final productsModel = await _homeRepo.getProducts(
         ProductResquestModel(
           searchTerm: null,
-          category: null,
+          category: selectedCategoryId,
           minPrice: null,
           maxPrice: null,
           isInStock: null,
@@ -100,7 +104,7 @@ class HomeCubit extends Cubit<HomeState> {
       final productsModel = await _homeRepo.getProducts(
         ProductResquestModel(
           searchTerm: null,
-          category: null,
+          category: selectedCategoryId,
           minPrice: null,
           maxPrice: null,
           isInStock: null,
@@ -131,5 +135,19 @@ class HomeCubit extends Cubit<HomeState> {
     } finally {
       isLoadingMore = false;
     }
+  }
+
+  //============================ filter products by category =================
+  Future<void> filterProductsByCategory(String? categoryId) async {
+    // Update selected category
+    selectedCategoryId = categoryId;
+
+    // Reset pagination
+    allProducts.clear();
+    currentPage = 1;
+    totalPages = null;
+
+    // Reload products with new filter
+    await getProducts();
   }
 }
