@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/category_model/categories_model.dart';
+import 'package:laza_ecommerce_app/features/home/data/models/category_model/category_item_model.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_item_model.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_resquest_model.dart';
 import 'package:laza_ecommerce_app/features/home/data/repositories/home_repo.dart';
@@ -20,6 +21,9 @@ class HomeCubit extends Cubit<HomeState> {
   // Selected category for filtering
   String? selectedCategoryId;
 
+  // Categories cache
+  List<CategoryItemModel> categories = [];
+
   //============================ get Categories =================
   Future<void> getCategories() async {
     emit(HomeCategoryLoading());
@@ -27,7 +31,8 @@ class HomeCubit extends Cubit<HomeState> {
 
     try {
       final categoryModel = await _homeRepo.getCategories();
-      log('Categories loaded: ${categoryModel.categories?.length ?? 0}');
+      categories = categoryModel.categories ?? [];
+      log('Categories loaded: ${categories.length}');
       emit(HomeCategorySuccess(categoryModel: categoryModel));
     } catch (e) {
       final errorMessage = e.toString().replaceAll('Exception: ', '');
@@ -60,7 +65,7 @@ class HomeCubit extends Cubit<HomeState> {
           sortBy: null,
           sortOrder: null,
           page: currentPage,
-          pageSize: 20,
+          limit: 40,
         ),
       );
 
@@ -111,7 +116,7 @@ class HomeCubit extends Cubit<HomeState> {
           sortBy: null,
           sortOrder: null,
           page: currentPage,
-          pageSize: 20,
+          limit: 40,
         ),
       );
 
@@ -141,6 +146,8 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> filterProductsByCategory(String? categoryId) async {
     // Update selected category
     selectedCategoryId = categoryId;
+    
+    log('Filtering products by category: $categoryId');
 
     // Reset pagination
     allProducts.clear();

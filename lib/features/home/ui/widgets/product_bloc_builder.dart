@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza_ecommerce_app/core/shared/setup_snack_bar_failure_state.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_item_model.dart';
 import 'package:laza_ecommerce_app/features/home/logic/cubit/home_cubit.dart';
+import 'package:laza_ecommerce_app/features/home/ui/widgets/empty_products_state.dart';
 import 'package:laza_ecommerce_app/features/home/ui/widgets/product_grid.dart';
 import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
 
@@ -72,8 +73,9 @@ class _ProductBlocBuilderState extends State<ProductBlocBuilder> {
               ? state.products
               : <ProductItemModel>[];
 
+          // Show empty state when no products and not loading
           if (products.isEmpty && !isLoading) {
-            return const SizedBox.shrink();
+            return const EmptyProductsState();
           }
 
           return ProductGrid(

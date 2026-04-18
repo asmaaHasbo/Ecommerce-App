@@ -9,10 +9,14 @@ import 'package:laza_ecommerce_app/features/home/data/models/category_model/cate
 class CategoriesListView extends StatefulWidget {
   final List<CategoryItemModel> categoriesList;
   final bool isLoading;
+  final String? selectedCategoryId;
+  final Function(String?)? onCategorySelected;
 
   const CategoriesListView({
     required this.categoriesList,
     this.isLoading = false,
+    this.selectedCategoryId,
+    this.onCategorySelected,
     super.key,
   });
 
@@ -21,10 +25,11 @@ class CategoriesListView extends StatefulWidget {
 }
 
 class _CategoriesListViewState extends State<CategoriesListView> {
-  String selectedCategoryId = 'all';
-
   @override
   Widget build(BuildContext context) {
+    // استخدام الـ selectedCategoryId من الـ parent أو default value
+    final selectedId = widget.selectedCategoryId ?? 'all';
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
@@ -58,7 +63,7 @@ class _CategoriesListViewState extends State<CategoriesListView> {
                     id: 'all',
                     name: 'All',
                     imageUrl: null,
-                    isSelected: selectedCategoryId == 'all',
+                    isSelected: selectedId == 'all',
                   );
                 }
 
@@ -68,7 +73,7 @@ class _CategoriesListViewState extends State<CategoriesListView> {
                   id: category.id,
                   name: category.name ?? '',
                   imageUrl: category.image,
-                  isSelected: selectedCategoryId == category.id,
+                  isSelected: selectedId == category.id,
                 );
               },
             ),
@@ -87,9 +92,8 @@ class _CategoriesListViewState extends State<CategoriesListView> {
     return GestureDetector(
       onTap: id != null
           ? () {
-              setState(() {
-                selectedCategoryId = id;
-              });
+              // استدعاء الـ callback بدل setState
+              widget.onCategorySelected?.call(id == 'all' ? null : id);
             }
           : null,
       child: Container(

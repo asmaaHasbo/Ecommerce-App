@@ -7,7 +7,7 @@ class ProductResquestModel {
   dynamic sortBy;
   dynamic sortOrder;
   int page;
-  int pageSize;
+  int limit;
 
   ProductResquestModel({
     required this.searchTerm,
@@ -18,18 +18,23 @@ class ProductResquestModel {
     required this.sortBy,
     required this.sortOrder,
     required this.page,
-    required this.pageSize,
+    required this.limit,
   });
 
-  Map<String, dynamic> toJson() => {
-    'searchTerm': searchTerm,
-    'category': category,
-    'minPrice': minPrice,
-    'maxPrice': maxPrice,
-    'isInStock': isInStock,
-    'sortBy': sortBy,
-    'sortOrder': sortOrder,
-    'page': page,
-    'pageSize': pageSize,
-  };
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    
+    if (searchTerm != null) map['searchTerm'] = searchTerm;
+    if (category != null) map['category'] = category;
+    if (minPrice != null) map['minPrice'] = minPrice;
+    if (maxPrice != null) map['maxPrice'] = maxPrice;
+    if (isInStock != null) map['isInStock'] = isInStock;
+    if (sortBy != null) map['sortBy'] = sortBy;
+    if (sortOrder != null) map['sortOrder'] = sortOrder;
+    map['page'] = page;
+    // Don't send limit to get all products
+    // if (limit != null) map['limit'] = limit;
+    
+    return map;
+  }
 }

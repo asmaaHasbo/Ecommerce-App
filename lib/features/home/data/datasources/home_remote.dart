@@ -28,7 +28,7 @@ class HomeRemote {
     try {
       final response = await _dio.get(
         ApiEndPontis.baseUrl + ApiEndPontis.products,
-        data: productResquestModel.toJson(),
+        queryParameters: productResquestModel.toJson(),
       );
 
       return ProductsModel.fromJson(response.data);
