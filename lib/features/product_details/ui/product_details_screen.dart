@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laza_ecommerce_app/features/cart/logic/cubit/cart_cubit.dart';
 import 'package:laza_ecommerce_app/features/home/data/models/products_model/product_item_model.dart';
 import 'package:laza_ecommerce_app/features/product_details/ui/widget/add_to_cart_button.dart';
 import 'package:laza_ecommerce_app/features/product_details/ui/widget/description_section.dart';
@@ -30,6 +32,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final String reviewComment =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada eget vitae amet...';
   final String reviewAvatar = 'https://i.pravatar.cc/150?img=12';
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CartCubit>().getCartProducts();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

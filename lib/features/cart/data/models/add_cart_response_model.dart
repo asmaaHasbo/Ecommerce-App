@@ -1,24 +1,22 @@
 class AddCartResponseModel {
+  String? status;
   String? message;
-  String? id;
-  String? productId;
-  int? quantity;
+  int? numOfCartItems;
+  String? cartId;
 
-  AddCartResponseModel({this.message, this.id, this.productId, this.quantity});
+  AddCartResponseModel({
+    this.status,
+    this.message,
+    this.numOfCartItems,
+    this.cartId,
+  });
 
   factory AddCartResponseModel.fromJson(Map<String, dynamic> json) {
     return AddCartResponseModel(
+      status: json['status'] as String?,
       message: json['message'] as String?,
-      id: json['id'] as String?,
-      productId: json['productId'] as String?,
-      quantity: json['quantity'] as int?,
+      numOfCartItems: json['numOfCartItems'] as int?,
+      cartId: json['cartId'] as String?,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'message': message,
-    'id': id,
-    'productId': productId,
-    'quantity': quantity,
-  };
 }

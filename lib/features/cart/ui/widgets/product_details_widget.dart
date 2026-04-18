@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
-import 'package:laza_ecommerce_app/features/cart/data/models/cart_products_model/cart_item.dart';
+import 'package:laza_ecommerce_app/features/cart/data/models/cart_products_model/cart_item_model.dart';
 
 class ProductDetailsWidget extends StatelessWidget {
-  
- final CartItemModel cartItem;
-  const ProductDetailsWidget({super.key, required this.cartItem});
+  final CartItemModel? cartItem;
+  const ProductDetailsWidget({super.key, this.cartItem});
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +14,14 @@ class ProductDetailsWidget extends StatelessWidget {
         SizedBox(
           width: 200,
           child: Text(
-            cartItem.productName!,
+            cartItem?.productName ?? '',
             style: AppTextStyles.font16w600black,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
         ),
-       Text(
-          '\$${cartItem.totalPrice} (-\$${cartItem.discountPercentage} Tax)',
+        Text(
+          '\$${cartItem?.price ?? 0}',
           style: AppTextStyles.font14w500maincolor,
         ),
       ],

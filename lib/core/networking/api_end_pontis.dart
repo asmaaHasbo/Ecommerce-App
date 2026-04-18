@@ -1,5 +1,6 @@
 class ApiEndPontis {
   static const String baseUrl = 'https://ecommerce.routemisr.com/api/v1/';
+  static const String baseUrlV2 = 'https://ecommerce.routemisr.com/api/v2/';
   
   static const String signUp = 'auth/signup';
   
@@ -15,11 +16,7 @@ class ApiEndPontis {
   
   static const String products = 'products';
   
-  static const String addProductToCart = 'cart/items';
-  
-  static const String getCartProduct = 'cart';
-  
-  static const String deleteProduct = 'cart/items/{id}';
-  
   static const String wishlist = 'wishlist';
+  
+  static const String cart = 'cart';
 }
