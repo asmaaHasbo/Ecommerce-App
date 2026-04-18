@@ -22,7 +22,7 @@ class RememperMeRow extends StatelessWidget {
           ),
           Switch(
             value: true,
-            activeColor: Colors.green,
+            activeThumbColor: Colors.green,
             onChanged: (bool value) {},
           ),
         ],

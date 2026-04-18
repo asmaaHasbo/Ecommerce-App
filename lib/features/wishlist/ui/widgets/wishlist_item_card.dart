@@ -23,7 +23,7 @@ class WishlistItemCard extends StatelessWidget {
       height: 140.h,
       // margin: EdgeInsets.only(bottom: 10.h),
       decoration: BoxDecoration(
-        color: Colors.white60,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(

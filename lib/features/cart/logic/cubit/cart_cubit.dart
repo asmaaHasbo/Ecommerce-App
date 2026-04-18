@@ -1,10 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:laza_ecommerce_app/core/networking/api_result.dart';
-import 'package:laza_ecommerce_app/features/cart/data/models/add_cart_request_model.dart';
-
 import 'package:laza_ecommerce_app/features/cart/data/models/add_cart_response_model.dart';
 import 'package:laza_ecommerce_app/features/cart/data/models/cart_products_model/cart_products_model.dart';
 import 'package:laza_ecommerce_app/features/cart/data/repos/cart_repo.dart';
@@ -12,66 +8,100 @@ import 'package:laza_ecommerce_app/features/cart/data/repos/cart_repo.dart';
 part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
-  CartRepo cartRepo;
-  CartCubit(this.cartRepo) : super(CartInitial());
+  final CartRepo _cartRepo;
+  final Set<String> _cartProductIds = {};
+
+  CartCubit(this._cartRepo) : super(CartInitial());
+
+  //===================== check if product in cart =========
+  bool isProductInCart(String productId) {
+    return _cartProductIds.contains(productId);
+  }
 
   //===================== add product to cart =========
-  emitAddProductsToCartStates({required String productId}) async {
+  Future<void> addProductToCart({required String productId}) async {
+    if (isProductInCart(productId)) {
+      emit(AddCartFailure(errMsg: 'Product already in cart'));
+      return;
+    }
+
     emit(AddCartLoading());
-    log('loading');
-    log('function add $productId');
-
-    ApiResult<AddCartResponseModel> response = await cartRepo.addItemToCart(
-      AddCartRequestModel(productId: productId, quantity: 1),
-    );
-
-    response.when(
-      success: (responseModel) {
-        log('add carrt item id is ${responseModel.productId} ');
-        emit(AddCartSuccess(addCartResponseModel: responseModel));
-      },
-      failure: (err) {
-        log('Error: $err');
-        emit(AddCartFailure(errMsg: err));
-      },
-    );
+    try {
+      final response = await _cartRepo.addItemToCart(
+        productId: productId,
+        quantity: 1,
+      );
+      _cartProductIds.add(productId);
+      log('Product added to cart successfully');
+      emit(AddCartSuccess(
+        addCartResponseModel: response,
+        message: response.message ?? 'Product added to cart',
+      ));
+    } catch (e) {
+      log('Add to cart error: ${e.toString()}');
+      emit(AddCartFailure(errMsg: e.toString().replaceAll('Exception: ', '')));
+    }
   }
 
-  //========================= get product cart =========
-  emitGetProductsCartStates() async {
+  //========================= get cart products =========
+  Future<void> getCartProducts() async {
     emit(GetCartLoading());
-    log('loading');
-    ApiResult<CartProductsModel> response = await cartRepo.getCartProducts();
-    response.when(
-      success: (responseModel) {
-        log('GET carrt item id is ${responseModel.cartId} ');
-
-        emit(GetCartSuccess(cartProductsModel: responseModel));
-      },
-      failure: (err) {
-        log('Error: $err');
-        emit(GetCartFailure(errMsg: err));
-      },
-    );
+    try {
+      final response = await _cartRepo.getCartProducts();
+      _cartProductIds.clear();
+      if (response.cartItems != null) {
+        for (var item in response.cartItems!) {
+          if (item.productId != null) {
+            _cartProductIds.add(item.productId!);
+          }
+        }
+      }
+      log('Cart items: ${response.cartItems?.length}');
+      emit(GetCartSuccess(cartProductsModel: response));
+    } catch (e) {
+      log('Get cart error: ${e.toString()}');
+      emit(GetCartFailure(errMsg: e.toString().replaceAll('Exception: ', '')));
+    }
   }
 
-  //========================= get product cart =========
-  emitDeleteProductsCartStates( { required String itemtId}) async {
-    log('loading');
-    ApiResult response = await cartRepo.deleteCartProducts(itemId: itemtId );
-    response.when(
-      success: (msg) {
-        log('item $msg');
-        emit(DelCartSuccess());
-      },
-      failure: (err) {
-        log('Error: $err');
-        emit(DelCartFailure());
-      },
-    );
+  //========================= update quantity =========
+  Future<void> updateCartQuantity({
+    required String productId,
+    required int count,
+  }) async {
+    try {
+      final response = await _cartRepo.updateCartQuantity(
+        productId: productId,
+        count: count,
+      );
+      log('Quantity updated successfully');
+      emit(UpdateCartSuccess(cartProductsModel: response));
+    } catch (e) {
+      log('Update quantity error: ${e.toString()}');
+      emit(UpdateCartFailure(errMsg: e.toString().replaceAll('Exception: ', '')));
+    }
   }
 
-
-
-
+  //========================= delete product =========
+  Future<void> deleteProductFromCart({required String itemId}) async {
+    try {
+      final response = await _cartRepo.deleteCartProduct(itemId: itemId);
+      _cartProductIds.clear();
+      if (response.cartItems != null) {
+        for (var item in response.cartItems!) {
+          if (item.productId != null) {
+            _cartProductIds.add(item.productId!);
+          }
+        }
+      }
+      log('Item deleted successfully');
+      emit(DelCartSuccess(
+        cartProductsModel: response,
+        message: response.message ?? 'Item removed from cart',
+      ));
+    } catch (e) {
+      log('Delete item error: ${e.toString()}');
+      emit(DelCartFailure(errMsg: e.toString().replaceAll('Exception: ', '')));
+    }
+  }
 }
