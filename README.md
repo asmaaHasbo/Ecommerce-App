@@ -1,6 +1,9 @@
 ### E-Commerce Shopping App 🛍️
 A modern Flutter e-commerce application with complete shopping functionality, featuring clean architecture, state management, and seamless API integration.
 
+### app imgs
+<img width="640" height="1280" alt="5992407190100184481" src="https://github.com/user-attachments/assets/39588c23-2fbc-4cac-bd3b-fc60bb1e9fdd" />
+
 ### 📱 Project Overview
 A full-featured e-commerce mobile application built with Flutter, implementing modern development practices including Clean Architecture, BLoC pattern, and API integration. The app provides a smooth shopping experience with product browsing, cart management, and user authentication.
 
