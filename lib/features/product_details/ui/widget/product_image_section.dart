@@ -36,19 +36,20 @@ class ProductImageSection extends StatelessWidget {
           );
         }
       },
-      child: Container(
-        height: 400.h,
+      child: SizedBox(
         width: double.infinity,
-        color: const Color(0xFFF8F8F8),
+        height: 400.h,
         child: Stack(
+          fit: StackFit.expand,
           children: [
-            Center(
-              child: CachedNetworkImage(
-                imageUrl: mainImage,
-                height: 350.h,
-                fit: BoxFit.contain,
-                placeholder: (context, url) => ImageShimmer(height: 350.h),
-                errorWidget: (context, url, error) => Column(
+            CachedNetworkImage(
+              imageUrl: mainImage,
+              fit: BoxFit.cover,
+              placeholder: (context, url) =>
+                  ImageShimmer(height: 400.h, width: double.infinity),
+              errorWidget: (context, url, error) => Container(
+                color: const Color(0xFFF5F5F5),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
@@ -65,6 +66,15 @@ class ProductImageSection extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.center,
+                  colors: [Colors.black.withOpacity(0.3), Colors.transparent],
                 ),
               ),
             ),
