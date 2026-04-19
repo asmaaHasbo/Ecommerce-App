@@ -9,15 +9,19 @@ import 'package:laza_ecommerce_app/features/cart/ui/widgets/quantity_button.dart
 class CartCounter extends StatelessWidget {
   final int quantity;
   final String productId;
+  final int? maxQuantity;
 
   const CartCounter({
     super.key,
     required this.quantity,
     required this.productId,
+    this.maxQuantity,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bool canIncrement = maxQuantity == null || quantity < maxQuantity!;
+    
     return Row(
       children: [
         QuantityButton(
@@ -30,6 +34,7 @@ class CartCounter extends StatelessWidget {
                   );
             }
           },
+          isEnabled: quantity > 1,
         ),
         SizedBox(width: 10.w),
         SizedBox(
@@ -47,11 +52,22 @@ class CartCounter extends StatelessWidget {
         QuantityButton(
           icon: Icons.add,
           onTap: () {
-            context.read<CartCubit>().updateCartQuantity(
-                  productId: productId,
-                  count: quantity + 1,
-                );
+            if (canIncrement) {
+              context.read<CartCubit>().updateCartQuantity(
+                    productId: productId,
+                    count: quantity + 1,
+                  );
+            } else if (maxQuantity != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Maximum available quantity is $maxQuantity'),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: Colors.orange,
+                ),
+              );
+            }
           },
+          isEnabled: canIncrement,
         ),
       ],
     );

@@ -1,32 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
+import 'package:laza_ecommerce_app/features/home/data/models/products_model/review_model.dart';
 
 class ReviewSection extends StatelessWidget {
-  final String reviewerName;
-  final String reviewDate;
-  final double reviewRating;
-  final String reviewComment;
-  final String reviewAvatar;
+  final List<ReviewModel>? reviews;
+  final VoidCallback? onViewAllTap;
 
   const ReviewSection({
     super.key,
-    required this.reviewerName,
-    required this.reviewDate,
-    required this.reviewRating,
-    required this.reviewComment,
-    required this.reviewAvatar,
+    this.reviews,
+    this.onViewAllTap,
   });
+
+  String _formatDate(String? dateString) {
+    if (dateString == null) return '';
+    try {
+      final date = DateTime.parse(dateString);
+      final months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+      ];
+      return '${date.day} ${months[date.month - 1]}, ${date.year}';
+    } catch (e) {
+      return dateString;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (reviews == null || reviews!.isEmpty) {
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Reviews', style: AppTextStyles.font16w600black),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Text(
+            'No reviews yet',
+            style: AppTextStyles.font14w400gray,
+          ),
+        ],
+      );
+    }
+
+    final firstReview = reviews!.first;
+
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Reviews', style: AppTextStyles.font16w600black),
-            Text('View All', style: AppTextStyles.font14w400gray),
+            if (reviews!.length > 1)
+              GestureDetector(
+                onTap: () => onViewAllTap?.call(),
+                child: Text(
+                  'View All (${reviews!.length})',
+                  style: AppTextStyles.font14w400gray.copyWith(
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
           ],
         ),
         SizedBox(height: 16.h),
@@ -35,7 +83,13 @@ class ReviewSection extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 20.r,
-              backgroundImage: NetworkImage(reviewAvatar),
+              backgroundColor: const Color(0xFF2B2B2B),
+              child: Text(
+                firstReview.user?.name?.substring(0, 1).toUpperCase() ?? 'U',
+                style: AppTextStyles.font16w600black.copyWith(
+                  color: Colors.white,
+                ),
+              ),
             ),
             SizedBox(width: 12.w),
             Expanded(
@@ -47,14 +101,14 @@ class ReviewSection extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          reviewerName,
+                          firstReview.user?.name ?? 'Anonymous',
                           style: AppTextStyles.font14w500maincolor,
                         ),
                       ),
                       Row(
                         children: [
                           Text(
-                            '$reviewRating',
+                            '${firstReview.rating ?? 0}',
                             style: AppTextStyles.font14w500maincolor,
                           ),
                           SizedBox(width: 4.w),
@@ -64,7 +118,6 @@ class ReviewSection extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 4.h),
-                  // FIXED: استخدام Column بدلاً من Row لتجنب Overflow
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -76,31 +129,32 @@ class ReviewSection extends StatelessWidget {
                             color: const Color(0xFF8E8E93),
                           ),
                           SizedBox(width: 4.w),
-                          Text(reviewDate, style: AppTextStyles.font12w400gray),
+                          Text(
+                            _formatDate(firstReview.createdAt),
+                            style: AppTextStyles.font12w400gray,
+                          ),
                         ],
                       ),
                       SizedBox(height: 8.h),
                       Row(
-                        children: [
-                          ...List.generate(
-                            4,
-                            (index) => Icon(
-                              Icons.star,
-                              size: 16.sp,
-                              color: Colors.amber,
-                            ),
-                          ),
-                          Icon(
-                            Icons.star_border,
+                        children: List.generate(
+                          5,
+                          (index) => Icon(
+                            index < (firstReview.rating ?? 0)
+                                ? Icons.star
+                                : Icons.star_border,
                             size: 16.sp,
                             color: Colors.amber,
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(height: 8.h),
-                  Text(reviewComment, style: AppTextStyles.font14w400gray),
+                  Text(
+                    firstReview.review ?? 'No comment',
+                    style: AppTextStyles.font14w400gray,
+                  ),
                 ],
               ),
             ),

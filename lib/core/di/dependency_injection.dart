@@ -20,6 +20,9 @@ import 'package:laza_ecommerce_app/features/cart/logic/cubit/cart_cubit.dart';
 import 'package:laza_ecommerce_app/features/home/data/datasources/home_remote.dart';
 import 'package:laza_ecommerce_app/features/home/data/repositories/home_repo.dart';
 import 'package:laza_ecommerce_app/features/home/logic/cubit/home_cubit.dart';
+import 'package:laza_ecommerce_app/features/product_details/data/datasources/product_details_remote.dart';
+import 'package:laza_ecommerce_app/features/product_details/data/repositories/product_details_repo.dart';
+import 'package:laza_ecommerce_app/features/product_details/logic/cubit/product_details_cubit.dart';
 import 'package:laza_ecommerce_app/features/wishlist/data/datasources/wishlist_remote.dart';
 import 'package:laza_ecommerce_app/features/wishlist/data/repositories/wishlist_repo.dart';
 import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
@@ -66,4 +69,9 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<WishlistRemote>(() => WishlistRemote());
   getIt.registerLazySingleton<WishlistRepo>(() => WishlistRepo(getIt()));
   getIt.registerFactory<WishlistCubit>(() => WishlistCubit(getIt()));
+
+  //================= product details ===============
+  getIt.registerLazySingleton<ProductDetailsRemote>(() => ProductDetailsRemote());
+  getIt.registerLazySingleton<ProductDetailsRepo>(() => ProductDetailsRepo(getIt()));
+  getIt.registerFactory<ProductDetailsCubit>(() => ProductDetailsCubit(getIt()));
 }
