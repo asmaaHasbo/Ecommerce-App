@@ -26,6 +26,9 @@ import 'package:laza_ecommerce_app/features/product_details/logic/cubit/product_
 import 'package:laza_ecommerce_app/features/wishlist/data/datasources/wishlist_remote.dart';
 import 'package:laza_ecommerce_app/features/wishlist/data/repositories/wishlist_repo.dart';
 import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:laza_ecommerce_app/features/profile/data/datasources/profile_remote.dart';
+import 'package:laza_ecommerce_app/features/profile/data/repositories/profile_repo.dart';
+import 'package:laza_ecommerce_app/features/profile/logic/cubit/profile_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -74,4 +77,9 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<ProductDetailsRemote>(() => ProductDetailsRemote());
   getIt.registerLazySingleton<ProductDetailsRepo>(() => ProductDetailsRepo(getIt()));
   getIt.registerFactory<ProductDetailsCubit>(() => ProductDetailsCubit(getIt()));
+
+  //================= profile ===============
+  getIt.registerLazySingleton<ProfileRemote>(() => ProfileRemote());
+  getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepo(getIt()));
+  getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt()));
 }
