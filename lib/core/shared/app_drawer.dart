@@ -33,7 +33,7 @@ class _AppDrawerState extends State<AppDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.6,
-      
+
       child: Column(
         children: [
           _buildDrawerHeader(context),
@@ -63,17 +63,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   },
                 ),
 
-                // const Divider(height: 1),
-
-                // _buildDrawerItem(
-                //   context: context,
-                //   icon: Icons.settings_outlined,
-                //   title: 'Settings',
-                //   onTap: () {
-                //     Navigator.pop(context);
-                //     // Navigate to settings
-                //   },
-                // ),
+                //
                 _buildDrawerItem(
                   context: context,
                   icon: Icons.info_outline,
