@@ -1,3 +1,5 @@
+import 'package:laza_ecommerce_app/features/home/data/models/products_model/review_model.dart';
+
 class ProductItemModel {
   int? sold;
   List<String>? images;
@@ -15,6 +17,7 @@ class ProductItemModel {
   double? ratingsAverage;
   String? createdAt;
   String? updatedAt;
+  List<ReviewModel>? reviews;
 
   ProductItemModel({
     this.sold,
@@ -33,6 +36,7 @@ class ProductItemModel {
     this.ratingsAverage,
     this.createdAt,
     this.updatedAt,
+    this.reviews,
   });
 
   factory ProductItemModel.fromJson(Map<String, dynamic> json) {
@@ -59,6 +63,9 @@ class ProductItemModel {
       ratingsAverage: (json['ratingsAverage'] as num?)?.toDouble(),
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
+      reviews: (json['reviews'] as List<dynamic>?)
+          ?.map((e) => ReviewModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 }
