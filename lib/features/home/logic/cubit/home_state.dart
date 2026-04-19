@@ -34,3 +34,17 @@ final class HomeProductFailure extends HomeState {
   final String errMsg;
   HomeProductFailure({required this.errMsg});
 }
+
+//===================== Home Search ==================
+final class HomeSearchResults extends HomeState {
+  final List<ProductItemModel> results;
+  final String query;
+  final bool hasMore;
+
+  HomeSearchResults({
+    required this.results,
+    required this.query,
+    required this.hasMore,
+  });
+}
+

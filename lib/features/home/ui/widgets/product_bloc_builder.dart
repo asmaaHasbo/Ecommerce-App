@@ -64,24 +64,36 @@ class _ProductBlocBuilderState extends State<ProductBlocBuilder> {
         buildWhen: (previous, current) =>
             current is HomeProductLoading ||
             current is HomeProductSuccess ||
-            current is HomeProductFailure,
+            current is HomeProductFailure ||
+            current is HomeSearchResults,
         builder: (context, state) {
           log('builder received state: $state');
 
           final isLoading = state is HomeProductLoading;
           final products = state is HomeProductSuccess
               ? state.products
-              : <ProductItemModel>[];
+              : state is HomeSearchResults
+                  ? state.results
+                  : <ProductItemModel>[];
 
           // Show empty state when no products and not loading
           if (products.isEmpty && !isLoading) {
-            return const EmptyProductsState();
+            // Check if it's a search with no results
+            final isSearchEmpty = state is HomeSearchResults;
+            return EmptyProductsState(
+              isSearchResult: isSearchEmpty,
+              searchQuery: isSearchEmpty ? state.query : null,
+            );
           }
 
           return ProductGrid(
             products: products,
             scrollController: _scrollController,
-            hasMore: state is HomeProductSuccess ? state.hasMore : false,
+            hasMore: state is HomeProductSuccess
+                ? state.hasMore
+                : state is HomeSearchResults
+                    ? state.hasMore
+                    : false,
             isLoading: isLoading,
           );
         },

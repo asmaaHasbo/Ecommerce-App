@@ -51,8 +51,26 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: 16.h),
               const SearchBarWidget(),
               SizedBox(height: 24.h),
-              CategoriesBlocBuilder(),
-              SizedBox(height: 24.h),
+              // Hide categories when searching
+              BlocBuilder<HomeCubit, HomeState>(
+                buildWhen: (previous, current) =>
+                    current is HomeSearchResults ||
+                    current is HomeProductSuccess ||
+                    current is HomeProductLoading,
+                builder: (context, state) {
+                  // Show categories only when not searching
+                  final isSearching = state is HomeSearchResults;
+                  if (isSearching) {
+                    return const SizedBox.shrink();
+                  }
+                  return Column(
+                    children: [
+                      CategoriesBlocBuilder(),
+                      SizedBox(height: 24.h),
+                    ],
+                  );
+                },
+              ),
               ProductBlocBuilder(),
               SizedBox(height: 24.h),
             ],
