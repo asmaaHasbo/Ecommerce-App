@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza_ecommerce_app/core/di/dependency_injection.dart';
 import 'package:laza_ecommerce_app/core/routing/routes.dart';
+import 'package:laza_ecommerce_app/features/about/ui/screens/about_screen.dart';
 import 'package:laza_ecommerce_app/features/auth/forget_password/logic/cubit/forget_password_cubit.dart';
 import 'package:laza_ecommerce_app/features/auth/forget_password/logic/cubit/verify_otp_cubit.dart';
 import 'package:laza_ecommerce_app/features/auth/forget_password/ui/forget_password_screen.dart';
@@ -96,6 +97,11 @@ class AppRouter {
             },
             child: const WishlistScreen(),
           ),
+        );
+
+      case Routes.aboutScreen:
+        return MaterialPageRoute(
+          builder: (_) => const AboutScreen(),
         );
 
       default:

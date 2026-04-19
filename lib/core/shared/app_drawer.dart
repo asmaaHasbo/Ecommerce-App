@@ -78,10 +78,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   context: context,
                   icon: Icons.info_outline,
                   title: 'About',
-                  onTap: () {
-                    Navigator.pop(context);
-                    // Show about dialog
-                  },
+                  route: Routes.aboutScreen,
                 ),
               ],
             ),

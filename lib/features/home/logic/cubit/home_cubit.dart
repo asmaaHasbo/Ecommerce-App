@@ -157,4 +157,45 @@ class HomeCubit extends Cubit<HomeState> {
     // Reload products with new filter
     await getProducts();
   }
+
+  //============================ search products (client-side) =================
+  void searchProducts(String query) {
+    log('Searching products with query: "$query"');
+
+    // If query is empty, show all products
+    if (query.trim().isEmpty) {
+      emit(
+        HomeProductSuccess(
+          products: List.from(allProducts),
+          hasMore: currentPage < (totalPages ?? 0),
+        ),
+      );
+      return;
+    }
+
+    // Filter products locally
+    final lowerQuery = query.toLowerCase().trim();
+    final filteredProducts = allProducts.where((product) {
+      final title = product.title?.toLowerCase() ?? '';
+      final description = product.description?.toLowerCase() ?? '';
+      final brand = product.brand?.name?.toLowerCase() ?? '';
+      final category = product.category?.name?.toLowerCase() ?? '';
+
+      return title.contains(lowerQuery) ||
+          description.contains(lowerQuery) ||
+          brand.contains(lowerQuery) ||
+          category.contains(lowerQuery);
+    }).toList();
+
+    log('Search results: ${filteredProducts.length} products found');
+
+    // Emit search results state
+    emit(
+      HomeSearchResults(
+        results: filteredProducts,
+        query: query,
+        hasMore: false, // No pagination for search results
+      ),
+    );
+  }
 }
