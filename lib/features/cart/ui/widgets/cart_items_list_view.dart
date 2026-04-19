@@ -30,10 +30,7 @@ class CartItemsList extends StatelessWidget {
             itemBuilder: (context, index) {
               return CartItemWidget(
                 cartItemModel: isLoading ? null : cartItems[index],
-              ).redactedHelper(
-                context: context,
-                isLoading: isLoading,
-              );
+              ).redactedHelper(context: context, isLoading: isLoading);
             },
           ),
         ),
@@ -76,29 +73,36 @@ class CartItemsList extends StatelessWidget {
                     ? null
                     : () {
                         // Navigate to payment screen
-                        Navigator.pushNamed(
-                          context,
-                          Routes.paymentScreen,
-                          arguments: {
-                            'amount': totalPrice.toDouble(),
-                            'customerName': 'Customer Name', // TODO: Get from user profile
-                            'customerEmail': 'customer@example.com', // TODO: Get from user profile
-                            'customerPhone': '+201234567890', // TODO: Get from user profile
-                            'orderReference': 'ORDER_${DateTime.now().millisecondsSinceEpoch}',
-                          },
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text(
+                              'Coming Soon!',
+                              textAlign: TextAlign.center,
+                            ),
+                            duration: const Duration(seconds: 2),
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.black.withOpacity(0.8),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 50.w,
+                              vertical: 20.h,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                          ),
                         );
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainColor,
-                  padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 32.w,
+                    vertical: 12.h,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
-                child: Text(
-                  'Checkout',
-                  style: AppTextStyles.font17W600white,
-                ),
+                child: Text('Checkout', style: AppTextStyles.font17W600white),
               ),
             ],
           ),
