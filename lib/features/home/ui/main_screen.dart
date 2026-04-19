@@ -10,6 +10,7 @@ import 'package:laza_ecommerce_app/features/cart/ui/cart_screen.dart';
 import 'package:laza_ecommerce_app/features/home/ui/home_screen.dart';
 import 'package:laza_ecommerce_app/features/wishlist/logic/cubit/wishlist_cubit.dart';
 import 'package:laza_ecommerce_app/features/wishlist/ui/wishlist_screen.dart';
+import 'package:laza_ecommerce_app/features/profile/ui/profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
         create: (context) => CartCubit(getIt()..getCartProducts()),
         child: const CartScreen(),
       ),
-      const WalletScreen(),
+      const ProfileScreen(),
     ];
   }
 
@@ -85,9 +86,9 @@ class _MainScreenState extends State<MainScreen> {
               ),
               _buildNavItem(
                 index: 3,
-                icon: Icons.account_balance_wallet_outlined,
-                activeIcon: Icons.account_balance_wallet,
-                label: 'Wallet',
+                icon: Icons.person,
+                activeIcon: Icons.person,
+                label: 'Profile',
               ),
             ],
           ),
@@ -109,7 +110,7 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           _currentIndex = index;
         });
-        
+
         // Refresh wishlist when navigating to wishlist tab
         if (index == 1) {
           context.read<WishlistCubit>().getWishlist();
@@ -133,45 +134,6 @@ class _MainScreenState extends State<MainScreen> {
               // SizedBox(e 8),
               Text(label, style: AppTextStyles.font15w500Purple),
             ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class WalletScreen extends StatelessWidget {
-  const WalletScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text('Wallet'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.account_balance_wallet_outlined,
-              // size: ScreenUtil.setWidth(100),
-              color: AppColors.iconGray,
-            ),
-            // SizedBox(height: ScreenUtil.setHeight(20)),
-            const Text(
-              'Wallet',
-              // style: AppTextStyles.font17w600Black,
-            ),
-            // SizedBox(height: ScreenUtil.setHeight(8)),
-            const Text(
-              'Manage your payments',
-              // style: AppTextStyles.font14w500Black,
-            ),
           ],
         ),
       ),

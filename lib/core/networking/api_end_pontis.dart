@@ -19,4 +19,6 @@ class ApiEndPontis {
   static const String wishlist = 'wishlist';
   
   static const String cart = 'cart';
+  
+  static const String updateProfile = 'users/updateMe/';
 }

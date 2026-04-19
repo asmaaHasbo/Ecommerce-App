@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laza_ecommerce_app/core/helpers/user_data_helper.dart';
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
 
-class WelcomeHeader extends StatelessWidget {
+class WelcomeHeader extends StatefulWidget {
   const WelcomeHeader({super.key});
+
+  @override
+  State<WelcomeHeader> createState() => _WelcomeHeaderState();
+}
+
+class _WelcomeHeaderState extends State<WelcomeHeader> {
+  String _username = 'User';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUsername();
+  }
+
+  Future<void> _loadUsername() async {
+    final username = await UserDataHelper.getUsername();
+    setState(() {
+      _username = username;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +34,7 @@ class WelcomeHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Hello',
+            'Hello, $_username',
             style: AppTextStyles.font24w700Black,
             textAlign: TextAlign.start,
           ),

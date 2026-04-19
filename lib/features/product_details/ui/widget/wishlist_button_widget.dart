@@ -27,7 +27,7 @@ class WishlistButtonWidget extends StatelessWidget {
             width: 45.w,
             height: 45.h,
             decoration: BoxDecoration(
-              color: Colors.white,
+              // color: Colors.white,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(

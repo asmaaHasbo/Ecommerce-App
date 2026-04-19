@@ -110,7 +110,7 @@ class WishlistItemCard extends StatelessWidget {
 
   Widget _buildProductInfo() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.h),
+      padding: EdgeInsets.symmetric(vertical: 12.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,18 +123,18 @@ class WishlistItemCard extends StatelessWidget {
                 Text(
                   product?.title ?? '',
                   style: AppTextStyles.font16w600black.copyWith(
-                    fontSize: 15.sp,
-                    height: 1.3,
+                    fontSize: 14.sp,
+                    height: 1.2,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (product?.brand?.name != null) ...[
-                  SizedBox(height: 6.h),
+                  SizedBox(height: 4.h),
                   Container(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 8.w,
-                      vertical: 4.h,
+                      horizontal: 6.w,
+                      vertical: 2.h,
                     ),
                     decoration: BoxDecoration(
                       color: AppColors.lighterGray,
@@ -143,7 +143,7 @@ class WishlistItemCard extends StatelessWidget {
                     child: Text(
                       product!.brand!.name!,
                       style: AppTextStyles.font12w400gray.copyWith(
-                        fontSize: 11.sp,
+                        fontSize: 10.sp,
                         color: AppColors.lightGray,
                       ),
                     ),
@@ -152,9 +152,9 @@ class WishlistItemCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: 4.h),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -168,7 +168,7 @@ class WishlistItemCard extends StatelessWidget {
               '\$${product?.price ?? ""}',
               style: AppTextStyles.font17w600Black.copyWith(
                 color: AppColors.mainColor,
-                fontSize: 18.sp,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
               ),
             ),

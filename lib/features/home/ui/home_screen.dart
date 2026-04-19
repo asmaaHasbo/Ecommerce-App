@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laza_ecommerce_app/core/shared/app_drawer.dart';
 import 'package:laza_ecommerce_app/core/themes/app_colors.dart';
 import 'package:laza_ecommerce_app/features/home/logic/cubit/home_cubit.dart';
 import 'package:laza_ecommerce_app/features/home/ui/widgets/categories_bloc_builder.dart';
@@ -38,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomAppBar(),
+      drawer: const AppDrawer(),
       body: RefreshIndicator(
         onRefresh: _onRefresh,
         child: SingleChildScrollView(

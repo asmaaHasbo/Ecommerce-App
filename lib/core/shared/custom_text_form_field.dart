@@ -12,6 +12,7 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     required this.validator,
     this.lableText,
+    this.enabled,
   });
 
   final TextEditingController controller;
@@ -19,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final String? lableText;
   final bool? isTextObsecure;
+  final bool? enabled;
   // final VoidCallback validator;
   final String? Function(String?)? validator;
   @override
@@ -38,6 +40,7 @@ class CustomTextField extends StatelessWidget {
           TextFormField(
             controller: controller,
             validator: validator,
+            enabled: enabled ?? true,
             obscureText: isTextObsecure ?? false,
             decoration: InputDecoration(
               isDense: true, // يقلل الارتفاع والمساحات الداخلية
@@ -45,7 +48,9 @@ class CustomTextField extends StatelessWidget {
                 horizontal: 20.0.w,
                 vertical: 18.0.h,
               ),
-              fillColor: const Color.fromARGB(255, 255, 255, 255),
+              fillColor: (enabled ?? true)
+                  ? const Color.fromARGB(255, 255, 255, 255)
+                  : AppColors.lighterGray,
               filled: true,
               hintText: hintText,
               hintStyle: AppTextStyles.font14W500lightGray,
