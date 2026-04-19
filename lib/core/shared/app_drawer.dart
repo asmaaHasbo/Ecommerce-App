@@ -53,15 +53,15 @@ class _AppDrawerState extends State<AppDrawer> {
                   title: 'Wishlist',
                   route: Routes.wishlistScreen,
                 ),
-                _buildDrawerItem(
-                  context: context,
-                  icon: Icons.person_outline,
-                  title: 'Profile',
-                  onTap: () {
-                    Navigator.pop(context);
-                    // Navigate to profile if needed
-                  },
-                ),
+                // _buildDrawerItem(
+                //   context: context,
+                //   icon: Icons.person_outline,
+                //   title: 'Profile',
+                //   onTap: () {
+                //     Navigator.pop(context);
+                //     // Navigate to profile if needed
+                //   },
+                // ),
 
                 //
                 _buildDrawerItem(

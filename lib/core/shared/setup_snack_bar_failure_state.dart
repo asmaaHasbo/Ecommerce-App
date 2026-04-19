@@ -4,24 +4,25 @@ import 'package:flutter/material.dart';
 setupSnackbarForFailureState(BuildContext context, String errMsg) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(
-        errMsg,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
-        maxLines: 10, // السماح بعرض أكثر من سطر
-        overflow: TextOverflow.visible, // عرض كل النص
+      content: Row(
+        children: [
+          const Icon(Icons.error_outline, color: Colors.white),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              errMsg,
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+              maxLines: 10,
+              overflow: TextOverflow.visible,
+            ),
+          ),
+        ],
       ),
       backgroundColor: Colors.red.shade700,
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.all(16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      duration: const Duration(seconds: 3), // وقت أطول للرسائل الطويلة
-      action: SnackBarAction(
-        label: 'OK',
-        textColor: Colors.white,
-        onPressed: () {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        },
-      ),
+      duration: const Duration(seconds: 4),
     ),
   );
 }
