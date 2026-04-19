@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laza_ecommerce_app/core/routing/routes.dart';
 import 'package:laza_ecommerce_app/core/shared/loading/redacted_helper.dart';
 import 'package:laza_ecommerce_app/core/themes/app_colors.dart';
 import 'package:laza_ecommerce_app/core/themes/app_styles.dart';
@@ -74,7 +75,18 @@ class CartItemsList extends StatelessWidget {
                 onPressed: isLoading
                     ? null
                     : () {
-                        // TODO: Implement checkout
+                        // Navigate to payment screen
+                        Navigator.pushNamed(
+                          context,
+                          Routes.paymentScreen,
+                          arguments: {
+                            'amount': totalPrice.toDouble(),
+                            'customerName': 'Customer Name', // TODO: Get from user profile
+                            'customerEmail': 'customer@example.com', // TODO: Get from user profile
+                            'customerPhone': '+201234567890', // TODO: Get from user profile
+                            'orderReference': 'ORDER_${DateTime.now().millisecondsSinceEpoch}',
+                          },
+                        );
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainColor,
