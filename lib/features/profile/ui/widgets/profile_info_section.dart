@@ -64,8 +64,7 @@ class _ProfileInfoSectionState extends State<ProfileInfoSection> {
         }
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.w),
-        padding: EdgeInsets.all(20.w),
+        padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12.r),
@@ -106,7 +105,7 @@ class _ProfileInfoSectionState extends State<ProfileInfoSection> {
               CustomTextField(
                 controller: _nameController,
                 hintText: 'Enter your name',
-                lableText: 'Name',
+                // lableText: 'Name',
                 enabled: _isEditing,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -118,7 +117,7 @@ class _ProfileInfoSectionState extends State<ProfileInfoSection> {
               CustomTextField(
                 controller: _emailController,
                 hintText: 'Enter your email',
-                lableText: 'Email',
+                // lableText: 'Email',
                 enabled: _isEditing,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -133,7 +132,8 @@ class _ProfileInfoSectionState extends State<ProfileInfoSection> {
               CustomTextField(
                 controller: _phoneController,
                 hintText: 'Enter your phone',
-                lableText: 'Phone',
+
+                // lableText: 'Phone',
                 enabled: _isEditing,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
